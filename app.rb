@@ -1,37 +1,36 @@
-# Mostly taken from http://qiita.com/masuidrive/items/1042d93740a7a72242a3
+require 'sinatra'   # gem 'sinatra'
+require 'line/bot'  # gem 'line-bot-api'
 
-require 'sinatra/base'
-require 'json'
-require 'rest-client'
+def client
+  @client ||= Line::Bot::Client.new { |config|
+    config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
+    config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
+  }
+end
 
-class App < Sinatra::Base
-  get '/' do
-    'fumi にゃん'
+post '/callback' do
+  body = request.body.read
+
+  signature = request.env['HTTP_X_LINE_SIGNATURE']
+  unless client.validate_signature(body, signature)
+    error 400 do 'Bad Request' end
   end
 
-  post '/linebot/callback' do
-    params = JSON.parse(request.body.read)
+  events = client.parse_events_from(body)
 
-    params['result'].each do |msg|
-      request_content = {
-        to: [msg['content']['from']],
-        toChannel: 1383378250, # Fixed  value
-        eventType: "138311608800106203", # Fixed value
-        content: msg['content']
-      }
-
-      endpoint_uri = 'https://trialbot-api.line.me/v1/events'
-      content_json = request_content.to_json
-
-      RestClient.proxy = ENV['FIXIE_URL'] if ENV['FIXIE_URL']
-      RestClient.post(endpoint_uri, content_json, {
-        'Content-Type' => 'application/json; charset=UTF-8',
-        'X-Line-ChannelID' => ENV["LINE_CHANNEL_ID"],
-        'X-Line-ChannelSecret' => ENV["LINE_CHANNEL_SECRET"],
-        'X-Line-Trusted-User-With-ACL' => ENV["LINE_CHANNEL_MID"],
-      })
+  events.each { |event|
+    case event
+    when Line::Bot::Event::Message
+      case event.type
+      when Line::Bot::Event::MessageType::Text
+        message = {
+          type: 'text',
+          text: event.message['text']
+        }
+        client.reply_message(event['replyToken'], message)
+      end
     end
+  }
 
-    "OK"
-  end
+  "OK"
 end
