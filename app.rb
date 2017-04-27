@@ -12,6 +12,7 @@ get '/' do
 end
 
 post '/callback' do
+  puts "メーセージを受信しました。"
   body = request.body.read
 
   signature = request.env['HTTP_X_LINE_SIGNATURE']
