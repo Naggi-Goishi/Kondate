@@ -13,6 +13,8 @@ end
 
 post '/callback' do
   puts "メーセージを受信しました。"
+  puts ENV["LINE_CHANNEL_SECRET"]
+  puts ENV["LINE_CHANNEL_TOKEN"]
   body = request.body.read
 
   signature = request.env['HTTP_X_LINE_SIGNATURE']
