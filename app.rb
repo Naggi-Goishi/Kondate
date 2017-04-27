@@ -35,5 +35,8 @@ post '/callback' do
     end
   }
 
+  puts message
+  puts events
+
   "OK"
 end
