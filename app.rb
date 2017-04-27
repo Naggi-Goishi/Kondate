@@ -1,8 +1,8 @@
 require 'sinatra'
 require 'line/bot'
 require_relative './app_helper'
-require_relative './models/response'
 require_relative './models/source'
+require_relative './models/response'
 
 post '/callback' do
   body = request.body.read

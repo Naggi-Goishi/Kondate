@@ -14,7 +14,3 @@ class Response
     end
   end
 end
-
-
-puts Response.new("今日の献立").get_response
-puts Response.new("材料追加したい").get_response
