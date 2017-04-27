@@ -9,13 +9,6 @@ def get_events(request, body)
   client.parse_events_from(body)
 end
 
-def getReplay(text)
-  if (/献立/ === text)
-    return "献立ですか？本日の献立候補のリストを送りますね！"
-  end
-  "わかりません"
-end
-
 def process_for_message(event)
   case event.type
   when Line::Bot::Event::MessageType::Text
@@ -26,7 +19,7 @@ end
 def process_for_text(event)
     message = {
       type: 'text',
-      text: getReplay(event.message['text'])
+      text: Response.new(event.message['text']).get_response)
     }
     client.reply_message(event['replyToken'], message)
 end
