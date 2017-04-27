@@ -5,8 +5,7 @@ def client
   }
 end
 
-def get_events(request)
-  body = request.body.read
+def get_events(request, body)
   client.parse_events_from(body)
 end
 
@@ -32,7 +31,7 @@ def process_for_text(event)
     client.reply_message(event['replyToken'], message)
 end
 
-def validate_signature(request)
+def validate_signature(request, body)
   signature = request.env['HTTP_X_LINE_SIGNATURE']
   unless client.validate_signature(body, signature)
     error 400 do 'Bad Request' end

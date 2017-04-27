@@ -3,9 +3,10 @@ require 'line/bot'
 require_relative 'app_helper'
 
 post '/callback' do
-  events = get_events(request)
+  body = request.body.read
+  events = get_events(request, body)
 
-  validate_signature(request)
+  validate_signature(request, body)
 
   events.each do |event|
     case event
