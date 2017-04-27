@@ -5,6 +5,10 @@ require 'json'
 require 'rest-client'
 
 class App < Sinatra::Base
+  get '/' do
+    'fumi にゃん'
+  end
+
   post '/linebot/callback' do
     params = JSON.parse(request.body.read)
 
