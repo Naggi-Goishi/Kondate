@@ -7,6 +7,9 @@ def client
     config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
   }
 end
+get '/' do
+  'Fumiにゃん'
+end
 
 post '/callback' do
   body = request.body.read
