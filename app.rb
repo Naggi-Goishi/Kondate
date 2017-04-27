@@ -30,13 +30,13 @@ post '/callback' do
           type: 'text',
           text: event.message['text']
         }
+        puts message
+        puts client
         client.reply_message(event['replyToken'], message)
       end
     end
   }
 
-  puts message
-  puts events
 
   "OK"
 end
