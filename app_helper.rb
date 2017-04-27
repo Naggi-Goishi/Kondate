@@ -19,7 +19,7 @@ end
 def process_for_text(event)
     message = {
       type: 'text',
-      text: Response.new(event.message['text']).get_response)
+      text: Response.new(event.message['text']).get_response
     }
     client.reply_message(event['replyToken'], message)
 end
