@@ -22,7 +22,7 @@ class Recipe < ActiveRecord::Base
   end
 
   def show
-    name + " ( " + url + " ) "
+    name + "\n( " + url + " ) "
   end
 
 private
