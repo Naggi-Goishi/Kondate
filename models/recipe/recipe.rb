@@ -10,7 +10,7 @@ class Recipe < ActiveRecord::Base
     if (recipe_kind == "false")
       Recipe.all[rand(Recipe.all.length)]
     else
-      recipes = Recipe.where(recipe_kind: recipe_kind)
+      recipes = RecipeKind.find_by(name: recipe_kind).recipes
       recipes[rand(recipes.length)]
     end
   end
