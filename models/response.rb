@@ -6,8 +6,7 @@ class Response
   def get_response
     case @source.type
     when Source.type[:asking_menu]
-      "献立ですか？本日の献立候補のリストを送りますね！\n
-      #{Recipe.random.show}"
+      "献立ですか？本日の献立候補のリストを送りますね！\n#{Recipe.random.show}"
     when Source.type[:adding_ingredients]
       '了解です！どのような材料がありますか？'
     when Source.type[:removing_ingredients]
