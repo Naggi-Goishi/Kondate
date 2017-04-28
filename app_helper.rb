@@ -2,6 +2,7 @@ require 'active_support/concern'
 
 module AppHelper
   extend ActiveSupport::Concern
+
   def client
     @client ||= Line::Bot::Client.new { |config|
       config.channel_secret = ENV["LINE_CHANNEL_SECRET"]

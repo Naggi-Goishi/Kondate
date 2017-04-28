@@ -1,6 +1,6 @@
 class Reply
-  def initialize(events)
-    puts "Replyのインスタンスを作成します"
+  def initialize(client, events)
+    @client = client
     @source = Source.new(getSource(events))
   end
 
@@ -9,7 +9,7 @@ class Reply
       type: 'text',
       text: get_text
     }
-    client.reply_message(event['replyToken'], message)
+    @client.reply_message(event['replyToken'], message)
   end
 
   def get_text
@@ -26,8 +26,6 @@ class Reply
 
 private
   def getSource(events)
-    puts "@sourceの所得中です"
-    puts events
     events.each do |event|
       return event.message['text']
     end

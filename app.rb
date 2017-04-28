@@ -20,7 +20,7 @@ class KondateChan < Sinatra::Base
     validate_signature(request, body)
 
     puts "メッセージを受信しました"
-    Reply.new(events).send
+    Reply.new(client, events).send
 
     "OK"
   end
