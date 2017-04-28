@@ -1,5 +1,6 @@
 class Reply
   def initialize(events)
+    puts "Replyのインスタンスを作成します"
     @source = Source.new(getSource(events))
   end
 
@@ -25,8 +26,10 @@ class Reply
 
 private
   def getSource(events)
+    puts "@sourceの所得中です"
+    puts events
     events.each do |event|
-      event.message['text'] if event.message['text']
+      return event.message['text']
     end
   end
 end
