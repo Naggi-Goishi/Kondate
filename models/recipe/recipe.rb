@@ -5,8 +5,7 @@ class Recipe < ActiveRecord::Base
   include Scraping
 
   def self.random
-    return "あれれー。データがないみたいー。作成者のなぎくんに連絡してみてー！" if Recipe.all.length == 0
-    Recipe.find(rand(Recipe.all.length))
+    Recipe.all[rand(Recipe.all.length)]
   end
 
   def show
