@@ -7,11 +7,11 @@ class Recipe < ActiveRecord::Base
   belongs_to :recipe_kind
 
   def self.random(recipe_kind)
-    if (recipe_kind)
+    if (recipe_kind == "false")
+      Recipe.all[rand(Recipe.all.length)]
+    else
       recipes = Recipe.where(recipe_kind: recipe_kind)
       recipes[rand(recipes.length)]
-    else
-      Recipe.all[rand(Recipe.all.length)]
     end
   end
 
