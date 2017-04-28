@@ -4,6 +4,8 @@ require_relative './scraping'
 class Recipe < ActiveRecord::Base
   include Scraping
 
+  belongs_to :recipe_kind
+
   def self.random
     Recipe.all[rand(Recipe.all.length)]
   end

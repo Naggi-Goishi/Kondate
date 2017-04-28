@@ -14,6 +14,11 @@ class KondateChan < Sinatra::Base
     'success'
   end
 
+  get '/recipe/import_recipe_kind_id' do
+    Recipe.import_recipe_kind_id
+    'success'
+  end
+
   get '/recipe_kind/import' do
     RecipeKind.import
     'success'
