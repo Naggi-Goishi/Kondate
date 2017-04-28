@@ -9,9 +9,9 @@ class Recipe < ActiveRecord::Base
   def self.random(recipe_kind)
     if (recipe_kind)
       recipes = Recipe.where(recipe_kind: recipe_kind)
-      recipes[random(recipes.length)]
+      recipes[rand(recipes.length)]
     else
-      Recipe.all[random(Recipe.all.length)]
+      Recipe.all[rand(Recipe.all.length)]
     end
   end
 
