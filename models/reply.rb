@@ -22,9 +22,18 @@ class Reply
   def get_text
     case @source.kind
     when Source.kind[:asking_recipe]
-      @@replys[@source.kind_en] + "・#{Recipe.random(@source.recipe_kind.to_s).show}"
+      @@replys[@source.kind_en] + "・#{random_recipe(@source.recipe_kind.to_s)}"
     else
       @@replys[@source.kind_en]
+    end
+  end
+
+private
+  def random_recipe(recipe_kind)
+    if recipe_kind == 'false'
+      Recipe.main.random.show
+    else
+      Recipe.where_recipe_kind(recipe_kind).random.show
     end
   end
 end
