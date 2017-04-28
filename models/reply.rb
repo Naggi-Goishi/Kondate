@@ -1,5 +1,5 @@
 class Reply
-  @@resplys = {
+  @@replys = {
     asking_recipe: "献立ですか？本日の献立候補のリストを送りますね！\n\n",
     adding_ingredients: '了解です！どのような材料がありますか？',
     removing_ingredients: '間違えでしたね！どの材料が必要ないですか？'
