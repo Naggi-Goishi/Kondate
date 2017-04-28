@@ -10,11 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170428024900) do
+ActiveRecord::Schema.define(version: 20170428190124) do
+
+  create_table "recipe_kinds", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name"
+  end
 
   create_table "recipes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "url"
+    t.bigint "recipe_kinds_id"
+    t.index ["recipe_kinds_id"], name: "index_recipes_on_recipe_kinds_id"
   end
 
 end

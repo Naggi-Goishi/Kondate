@@ -14,6 +14,11 @@ class KondateChan < Sinatra::Base
     'success'
   end
 
+  get '/recipe_kind/import' do
+    RecipeKind.import
+    'success'
+  end
+
   post '/callback' do
     body = request.body.read
     events = get_events(request, body)
