@@ -1,7 +1,8 @@
 class Reply
   def initialize(client, events)
     @client = client
-    @source = Source.new(getSource(events))
+    @event  = events.first
+    @source = Source.new(@event.message['text'])
   end
 
   def send
@@ -9,7 +10,7 @@ class Reply
       type: 'text',
       text: get_text
     }
-    @client.reply_message(event['replyToken'], message)
+    @client.reply_message(@event['replyToken'], message)
   end
 
   def get_text
@@ -20,14 +21,6 @@ class Reply
       '了解です！どのような材料がありますか？'
     when Source.type[:removing_ingredients]
       '間違えでしたね！どの材料が必要ないですか？'
-    end
-  end
-
-
-private
-  def getSource(events)
-    events.each do |event|
-      return event.message['text']
     end
   end
 end
