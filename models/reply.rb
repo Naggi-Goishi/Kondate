@@ -20,11 +20,11 @@ class Reply
   end
 
   def get_text
-    case @source.type
-    when Source.type[:asking_recipe]
-      @@replys[@source.type_en] + "・#{Recipe.random(@source.recipe_kind.to_s).show}"
+    case @source.kind
+    when Source.kind[:asking_recipe]
+      @@replys[@source.kind_en] + "・#{Recipe.random(@source.recipe_kind.to_s).show}"
     else
-      @@replys[@source.type_en]
+      @@replys[@source.kind_en]
     end
   end
 end
