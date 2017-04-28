@@ -1,8 +1,10 @@
 require 'sinatra'
 require 'line/bot'
+require 'sinatra/activerecord'
 require_relative './app_helper'
-require_relative './models/source'
-require_relative './models/response'
+require_relative './models/base'
+
+set :database_file, "./config/database.yml"
 
 post '/callback' do
   body = request.body.read

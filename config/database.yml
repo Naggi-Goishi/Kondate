@@ -1,0 +1,10 @@
+development:
+  adapter: mysql2
+  database: kondate_development
+  username: root
+  password: ''
+  host: localhost
+
+production:
+  url: <%= ENV['DATABASE_URL'] %>
+  
