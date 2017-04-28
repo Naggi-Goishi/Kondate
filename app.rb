@@ -10,19 +10,18 @@ class KondateChan < Sinatra::Base
   set :database_file, "./config/database.yml"
 
   get '/recipe/import' do
-  Recipe.import
-  'imported'
+    Recipe.import
+    'success'
   end
 
   post '/callback' do
-  body = request.body.read
-  events = get_events(request, body)
+    body = request.body.read
+    events = get_events(request, body)
+    validate_signature(request, body)
 
-  validate_signature(request, body)
+    Reply.new(events).send
 
-  Response.new(events).send
-
-  "OK"
+    "OK"
   end
 
 end
