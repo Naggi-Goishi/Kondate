@@ -6,8 +6,13 @@ class Recipe < ActiveRecord::Base
 
   belongs_to :recipe_kind
 
-  def self.random
-    Recipe.all[rand(Recipe.all.length)]
+  def self.random(recipe_kind)
+    if (recipe_kind)
+      recipes = Recipe.where(recipe_kind: recipe_kind)
+      recipes[random(recipes.length)]
+    else
+      Recipe.all[random(Recipe.all.length)]
+    end
   end
 
   def show

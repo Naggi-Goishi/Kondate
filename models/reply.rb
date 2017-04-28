@@ -1,4 +1,10 @@
 class Reply
+  @@resplys = {
+    asking_recipe: "献立ですか？本日の献立候補のリストを送りますね！\n\n",
+    adding_ingredients: '了解です！どのような材料がありますか？',
+    removing_ingredients: '間違えでしたね！どの材料が必要ないですか？'
+  }
+
   def initialize(client, events)
     @client = client
     @event  = events.first
@@ -15,12 +21,10 @@ class Reply
 
   def get_text
     case @source.type
-    when Source.type[:asking_menu]
-      "献立ですか？本日の献立候補のリストを送りますね！\n\n・#{Recipe.random.show}"
-    when Source.type[:adding_ingredients]
-      '了解です！どのような材料がありますか？'
-    when Source.type[:removing_ingredients]
-      '間違えでしたね！どの材料が必要ないですか？'
+    when Source.type[:asking_recipe]
+      @@replys[@source.type_en] + "・#{Recipe.random(@source.recipe_kind.to_s).show}"
+    else
+      @@replys[@source.type_en]
     end
   end
 end
