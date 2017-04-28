@@ -6,7 +6,4 @@ gem 'sinatra-activerecord'
 gem 'activerecord'
 gem 'mysql2'
 gem 'rake'
-
-group :development do
-  gem 'mechanize'
-end
+gem 'mechanize'

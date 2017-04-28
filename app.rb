@@ -6,6 +6,11 @@ require_relative './models/base'
 
 set :database_file, "./config/database.yml"
 
+get '/recipe/import'
+  Recipe.import
+  'imported'
+end
+
 post '/callback' do
   body = request.body.read
   events = get_events(request, body)
