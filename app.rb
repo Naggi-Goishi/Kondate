@@ -1,29 +1,28 @@
-require 'sinatra'
 require 'line/bot'
+require 'sinatra/base'
 require 'sinatra/activerecord'
 require_relative './app_helper'
 require_relative './models/base'
 
-set :database_file, "./config/database.yml"
+class KondateChan < Sinatra::Base
+  include AppHelper
 
-get '/recipe/import' do
+  set :database_file, "./config/database.yml"
+
+  get '/recipe/import' do
   Recipe.import
   'imported'
-end
+  end
 
-post '/callback' do
+  post '/callback' do
   body = request.body.read
   events = get_events(request, body)
 
   validate_signature(request, body)
 
-  events.each do |event|
-    case event
-    when Line::Bot::Event::Message
-      process_for_message(event)
-    end
-  end
+  Response.new(events).send
 
   "OK"
-end
+  end
 
+end
