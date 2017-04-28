@@ -12,7 +12,7 @@ class Recipe < ActiveRecord::Base
     for i in 1..num_recipes
       name = get_name_from_names(names, i)
       url = get_url_from_urls(base_url, urls, i)
-      Recipe.create(name: name, url: url)
+      Recipe.where(id: i, name: name, url: url).first_or_initialize.save
     end
   end
 
