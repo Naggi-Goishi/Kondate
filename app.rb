@@ -6,7 +6,7 @@ require_relative './models/base'
 
 set :database_file, "./config/database.yml"
 
-get '/recipe/import'
+get '/recipe/import' do
   Recipe.import
   'imported'
 end
