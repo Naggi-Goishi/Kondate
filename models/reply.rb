@@ -8,9 +8,8 @@ class Reply
   def initialize(client, events)
     @client = client
     @event  = events.first
-    @source = Source.new(@event.message['text'])
+    @source = get_source
     @message = get_message
-    p @message
   end
 
   def send
@@ -65,6 +64,15 @@ class Reply
 
   def get_recipe
     @@replys[@source.kind_en] + "・#{random_recipe(@source.recipe_kind.to_s)}"
+  end
+
+  def get_source
+    case @event
+    when Line::Bot::Event::Join
+      p @event.postback.data
+    when Line::Bot::Event::Message
+      @event.message['text']
+    end
   end
 
 private
