@@ -53,7 +53,7 @@ class Reply
   end
 
   def get_message
-    case @souorce.klass
+    case @source.klass
     when Line::Bot::Event::Postback
       case @text
       when 'ingredient'
