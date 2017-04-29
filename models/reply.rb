@@ -70,7 +70,9 @@ class Reply
     case @event
     when Line::Bot::Event::Postback
       p "event type is postback"
-      p @event.data
+      p @event
+      p @event['postback']
+      p @event['postback']['data']
     when Line::Bot::Event::Message
       p "event type is message"
       Source.new(@event.message['text'])
