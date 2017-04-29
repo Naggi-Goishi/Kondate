@@ -12,13 +12,14 @@ class Source
     dessert: 'デザート'
   }
 
-  attr_accessor :recipe_kind, :kind, :kind_en
+  attr_accessor :ingredients, :kind, :kind_en, :recipe_kind
 
   def initialize(text)
     @text = text
-    @recipe_kind = get_recipe_kind
     @kind = get_kind
     @kind_en = get_en(@@kinds, @kind)
+    @ingredients = get_ingredients
+    @recipe_kind = get_recipe_kind
   end
 
   def self.kind
@@ -54,7 +55,7 @@ private
     end
   end
 
-  def text_contains(kind)
-    Regexp.new(kind).match(@text)
+  def text_contains(string)
+    Regexp.new(string).match(@text)
   end
 end

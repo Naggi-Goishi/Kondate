@@ -1,6 +1,7 @@
 require 'line/bot'
 require 'sinatra/base'
 require 'sinatra/activerecord'
+require 'mechanize'
 require_relative './app_helper'
 require_relative './models/base'
 
@@ -9,18 +10,8 @@ class KondateChan < Sinatra::Base
 
   set :database_file, "./config/database.yml"
 
-  get '/recipe/import' do
-    Recipe.import
-    'success'
-  end
-
-  get '/recipe/import_recipe_kind_id' do
-    Recipe.import_recipe_kind_id
-    'success'
-  end
-
-  get '/recipe_kind/import' do
-    RecipeKind.import
+  get 'ingredient/import' do
+    Ingredient.import
     'success'
   end
 

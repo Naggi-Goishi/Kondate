@@ -9,31 +9,72 @@ class Reply
     @client = client
     @event  = events.first
     @source = Source.new(@event.message['text'])
+    @message = get_message
   end
 
   def send
-    message = {
+    @client.reply_message(@event['replyToken'], @message)
+  end
+
+  def create_text
+    {
       type: 'text',
       text: get_text
     }
-    @client.reply_message(@event['replyToken'], message)
   end
 
-  def get_text
+  def create_button
+    {
+      "type": "template",
+      "altText": "this is a buttons template",
+      "template": {
+          "type": "buttons",
+          "title": "メニュー",
+          "text": "献立ですね！今日のご飯を一緒に考えましょう！",
+          "actions": [
+              {
+                "type": "postback",
+                "label": "材料から",
+                "data": "action=ingredient"
+              },
+              {
+                "type": "postback",
+                "label": "食べ物から",
+                "data": "action=recipe"
+              },
+              {
+                "type": "uri",
+                "label": "種類から",
+                "uri": "action=recipe_kind"
+              }
+          ]
+      }
+    }
+  end
+
+  def get_message
     case @source.kind
     when Source.kind[:asking_recipe]
-      @@replys[@source.kind_en] + "・#{random_recipe(@source.recipe_kind.to_s)}"
+      @message = @source.recipe_kind ? create_button : get_recipe
     else
-      @@replys[@source.kind_en]
+      @message = @@replys[@source.kind_en]
     end
   end
 
+  def get_recipe
+    @@replys[@source.kind_en] + "・#{random_recipe(@source.recipe_kind.to_s, @source.ingredients)}"
+  end
+
 private
-  def random_recipe(recipe_kind)
-    if recipe_kind == 'false'
+  def random_recipe(recipe_kind, ingredients)
+    if recipe_kind == 'false' && ingredients.empty?
       Recipe.main.random.show
-    else
+    elsif recipe_kind && ingredients.empty?
       Recipe.where_recipe_kind(recipe_kind).random.show
+    elsif recipe_kind == 'false' && ingredients.empty?
+      Recipe.where_ingredients(ingredients).random.show
+    else
+      Recipe.where_recipe_kind(recipe_kind).where_ingredients(ingredients).show
     end
   end
 end
