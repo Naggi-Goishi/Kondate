@@ -57,11 +57,11 @@ class Reply
     when Line::Bot::Event::Postback
       case @source.text
       when 'ingredient'
-        create_text('材料から考えるのですね！お使いになる材料を、「改行」もしくは「、」でわけて送ってください！\n\n 例１）人参\n玉ねぎ\nじゃがいも\n\n例２)人参、玉ねぎ、じゃがいも')
+        create_text("材料から考えるのですね！お使いになる材料を、「改行」もしくは「、」でわけて送ってください！\n\n 例１）人参\n玉ねぎ\nじゃがいも\n\n例２)人参、玉ねぎ、じゃがいも")
       when 'recipe'
         create_text('お調べになりたい。料理名を教えてください！')
       when 'recipe_kind'
-        create_text('現在、９つの中から検索いただけます！「和食」「洋食」「中華」「フレンチ」「イタリアン」「スパニッシュ」「アジアン」「エスニック」「デザート」です！')
+        create_text("現在、９つの中から検索いただけます！\n・和食\n・洋食\n・中華\n・フレンチ\n・イタリアン\n・スパニッシュ\n・アジアン\n・エスニック\n・デザート")
       end
     when Line::Bot::Event::Message
       p "Line::Bot::Event::Messageのメッセージを受信しました"
