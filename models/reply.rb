@@ -68,8 +68,8 @@ class Reply
 
   def get_source
     case @event
-    when Line::Bot::Event::Join
-      p "event type is join"
+    when Line::Bot::Event::Postback
+      p "event type is postback"
       p @event.postback.data
     when Line::Bot::Event::Message
       p "event type is message"
