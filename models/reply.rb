@@ -71,7 +71,7 @@ class Reply
     when Line::Bot::Event::Join
       p @event.postback.data
     when Line::Bot::Event::Message
-      @event.message['text']
+      Source.new(@event.message['text'])
     end
   end
 
