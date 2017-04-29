@@ -16,10 +16,10 @@ class Reply
     @client.reply_message(@event['replyToken'], @message)
   end
 
-  def create_text
+  def create_text(text)
     {
       type: 'text',
-      text: get_recipe
+      text: text
     }
   end
 
@@ -53,12 +53,11 @@ class Reply
   end
 
   def get_message
-    puts 'creating message ......'
     case @source.kind
     when Source.kind[:asking_recipe]
-      @source.recipe_kind ? create_text : create_button
+      return @source.recipe_kind ? create_text(get_recipe) : create_button
     else
-      @@replys[@source.kind_en]
+      return create_text(@@replys[@source.kind_en])
     end
   end
 
