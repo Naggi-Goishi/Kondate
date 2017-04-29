@@ -19,7 +19,7 @@ class Reply
   def create_text
     {
       type: 'text',
-      text: get_text
+      text: get_recipe
     }
   end
 
@@ -56,11 +56,9 @@ class Reply
     puts 'creating message ......'
     case @source.kind
     when Source.kind[:asking_recipe]
-      puts 'asked recipe'
-      puts @source.recipe_kind
-      @message = @source.recipe_kind ? get_recipe : create_button
+      @source.recipe_kind ? create_text : create_button
     else
-      @message = @@replys[@source.kind_en]
+      @@replys[@source.kind_en]
     end
   end
 
