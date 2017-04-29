@@ -53,8 +53,10 @@ class Reply
   end
 
   def get_message
+    puts 'creating message ......'
     case @source.kind
     when Source.kind[:asking_recipe]
+      puts 'asked recipe'
       @message = @source.recipe_kind ? get_recipe : create_button
     else
       @message = @@replys[@source.kind_en]
