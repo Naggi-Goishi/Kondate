@@ -69,7 +69,7 @@ private
   def random_recipe(recipe_kind)
     if recipe_kind == 'false'
       Recipe.main.random.show
-    elsif
+    else
       Recipe.where_recipe_kind(recipe_kind).random.show
     end
   end
