@@ -18,7 +18,6 @@ class Source
     @text = text
     @kind = get_kind
     @kind_en = get_en(@@kinds, @kind)
-    @ingredients = get_ingredients
     @recipe_kind = get_recipe_kind
   end
 
