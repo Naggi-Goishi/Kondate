@@ -65,6 +65,8 @@ class Reply
         create_text('現在、９つの中から検索いただけます！「和食」「洋食」「中華」「フレンチ」「イタリアン」「スパニッシュ」「アジアン」「エスニック」「デザート」です！')
       end
     when Line::Bot::Event::Message
+      p "Line::Bot::Event::Messageのメッセージを受信しました"
+      p @source.kind
       case @source.kind
       when Source.kind[:asking_recipe]
         p create_button
