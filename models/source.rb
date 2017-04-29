@@ -14,16 +14,11 @@ class Source
 
   attr_accessor :ingredients, :kind, :kind_en, :recipe_kind, :klass, :text
 
-  def initialize(text, klass)
+  def initialize(text)
     @text = text
-    @klass = klass
-
-    case @klass
-    when Line::Bot::Event::Message
-      @recipe_kind = get_recipe_kind
-      @kind = get_kind
-      @kind_en = get_en(@@kinds, @kind)
-    end
+    @recipe_kind = get_recipe_kind
+    @kind = get_kind
+    @kind_en = get_en(@@kinds, @kind)
   end
 
   def self.kind
@@ -57,6 +52,7 @@ private
     kinds.each do |en, ja|
       return en if kind == ja 
     end
+    false
   end
 
   def text_contains(string)

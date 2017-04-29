@@ -53,8 +53,7 @@ class Reply
   end
 
   def get_message
-    p @source.klass
-    case @source.klass
+    case @event
     when Line::Bot::Event::Postback
       case @source.text
       when 'ingredient'
@@ -84,9 +83,9 @@ class Reply
   def get_source
     case @event
     when Line::Bot::Event::Postback
-      Source.new(@event['postback']['data'], Line::Bot::Event::Postback)
+      Source.new(@event['postback']['data'])
     when Line::Bot::Event::Message
-      Source.new(@event.message['text'], Line::Bot::Event::Message)
+      Source.new(@event.message['text'])
     end
   end
 
