@@ -57,6 +57,7 @@ class Reply
     case @source.kind
     when Source.kind[:asking_recipe]
       puts 'asked recipe'
+      puts @source.recipe_kind
       @message = @source.recipe_kind ? get_recipe : create_button
     else
       @message = @@replys[@source.kind_en]
