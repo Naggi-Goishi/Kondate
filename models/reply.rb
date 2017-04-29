@@ -10,6 +10,7 @@ class Reply
     @event  = events.first
     @source = Source.new(@event.message['text'])
     @message = get_message
+    p @message
   end
 
   def send
@@ -43,9 +44,9 @@ class Reply
                 "data": "action=recipe"
               },
               {
-                "type": "uri",
+                "type": "postback",
                 "label": "種類から",
-                "uri": "action=recipe_kind"
+                "data": "action=recipe_kind"
               }
           ]
       }
@@ -55,6 +56,7 @@ class Reply
   def get_message
     case @source.kind
     when Source.kind[:asking_recipe]
+      p create_button
       return @source.recipe_kind ? create_text(get_recipe) : create_button
     else
       return create_text(@@replys[@source.kind_en])
