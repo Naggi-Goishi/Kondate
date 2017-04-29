@@ -16,9 +16,9 @@ class Source
 
   def initialize(text)
     @text = text
+    @recipe_kind = get_recipe_kind
     @kind = get_kind
     @kind_en = get_en(@@kinds, @kind)
-    @recipe_kind = get_recipe_kind
   end
 
   def self.kind
