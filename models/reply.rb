@@ -69,8 +69,10 @@ class Reply
   def get_source
     case @event
     when Line::Bot::Event::Join
+      p "event type is join"
       p @event.postback.data
     when Line::Bot::Event::Message
+      p "event type is message"
       Source.new(@event.message['text'])
     end
   end
