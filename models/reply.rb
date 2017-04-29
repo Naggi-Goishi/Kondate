@@ -55,26 +55,22 @@ class Reply
   def get_message
     case @source.kind
     when Source.kind[:asking_recipe]
-      @message = @source.recipe_kind ? create_button : get_recipe
+      @message = @source.recipe_kind ? get_recipe : create_button
     else
       @message = @@replys[@source.kind_en]
     end
   end
 
   def get_recipe
-    @@replys[@source.kind_en] + "・#{random_recipe(@source.recipe_kind.to_s, @source.ingredients)}"
+    @@replys[@source.kind_en] + "・#{random_recipe(@source.recipe_kind.to_s)}"
   end
 
 private
-  def random_recipe(recipe_kind, ingredients)
-    if recipe_kind == 'false' && ingredients.empty?
+  def random_recipe(recipe_kind)
+    if recipe_kind == 'false'
       Recipe.main.random.show
-    elsif recipe_kind && ingredients.empty?
+    elsif
       Recipe.where_recipe_kind(recipe_kind).random.show
-    elsif recipe_kind == 'false' && ingredients.empty?
-      Recipe.where_ingredients(ingredients).random.show
-    else
-      Recipe.where_recipe_kind(recipe_kind).where_ingredients(ingredients).show
     end
   end
 end
