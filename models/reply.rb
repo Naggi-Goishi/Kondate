@@ -35,17 +35,17 @@ class Reply
               {
                 "type": "postback",
                 "label": "材料から",
-                "data": "action=ingredient"
+                "data": "ingredient"
               },
               {
                 "type": "postback",
                 "label": "食べ物から",
-                "data": "action=recipe"
+                "data": "recipe"
               },
               {
                 "type": "postback",
                 "label": "種類から",
-                "data": "action=recipe_kind"
+                "data": "recipe_kind"
               }
           ]
       }
@@ -53,12 +53,24 @@ class Reply
   end
 
   def get_message
-    case @source.kind
-    when Source.kind[:asking_recipe]
-      p create_button
-      return @source.recipe_kind ? create_text(get_recipe) : create_button
-    else
-      return create_text(@@replys[@source.kind_en])
+    case @souorce.klass
+    when Line::Bot::Event::Postback
+      case @text
+      when 'ingredient'
+        create_text('材料から考えるのですね！お使いになる材料を、「改行」もしくは「、」でわけて送ってください！\n\n 例１）人参\n玉ねぎ\nじゃがいも\n\n例２)人参、玉ねぎ、じゃがいも')
+      when 'recipe'
+        create_text('お調べになりたい。料理名を教えてください！')
+      when 'recipe_kind'
+        create_text('現在、９つの中から検索いただけます！「和食」「洋食」「中華」「フレンチ」「イタリアン」「スパニッシュ」「アジアン」「エスニック」「デザート」です！')
+      end
+    when Line::Bot::Event::Message
+      case @source.kind
+      when Source.kind[:asking_recipe]
+        p create_button
+        return @source.recipe_kind ? create_text(get_recipe) : create_button
+      else
+        return create_text(@@replys[@source.kind_en])
+      end
     end
   end
 
@@ -69,13 +81,9 @@ class Reply
   def get_source
     case @event
     when Line::Bot::Event::Postback
-      p "event type is postback"
-      p @event
-      p @event['postback']
-      p @event['postback']['data']
+      Source.new(@event['postback']['data'], Line::Bot::Event::Postback)
     when Line::Bot::Event::Message
-      p "event type is message"
-      Source.new(@event.message['text'])
+      Source.new(@event.message['text'], Line::Bot::Event::Message)
     end
   end
 

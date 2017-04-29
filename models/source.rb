@@ -12,13 +12,18 @@ class Source
     dessert: 'デザート'
   }
 
-  attr_accessor :ingredients, :kind, :kind_en, :recipe_kind
+  attr_accessor :ingredients, :kind, :kind_en, :recipe_kind, :klass, :text
 
-  def initialize(text)
+  def initialize(text, klass)
     @text = text
-    @recipe_kind = get_recipe_kind
-    @kind = get_kind
-    @kind_en = get_en(@@kinds, @kind)
+    @klass = klass
+
+    case @klass
+    when Line::Bot::Event::Message
+      @recipe_kind = get_recipe_kind
+      @kind = get_kind
+      @kind_en = get_en(@@kinds, @kind)
+    end
   end
 
   def self.kind
