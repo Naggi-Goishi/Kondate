@@ -53,9 +53,10 @@ class Reply
   end
 
   def get_message
+    p @source.klass
     case @source.klass
     when Line::Bot::Event::Postback
-      case @text
+      case @source.text
       when 'ingredient'
         create_text('材料から考えるのですね！お使いになる材料を、「改行」もしくは「、」でわけて送ってください！\n\n 例１）人参\n玉ねぎ\nじゃがいも\n\n例２)人参、玉ねぎ、じゃがいも')
       when 'recipe'
