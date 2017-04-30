@@ -14,7 +14,7 @@ class ReplyContent
     if @source.ingredients.contents.first.nil? || recipes.blank?
       return Message.new('すみません！該当するレシピがありませんでした。').build 
     end
-
+    p columns
     Carousel.new(columns).build
   end
 
