@@ -13,7 +13,7 @@ class Source
   }
   Ingredients = Struct.new(:contents) do
     def show
-      contents.inject('') { |text, ingredient| text + 'と' + ingredient.name } + 'を使う料理'
+      contents.inject('') { |text, ingredient| text + 'と' + ingredient.name } + 'を使う料理'[1..-1]
     end
   end
 
