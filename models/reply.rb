@@ -55,9 +55,8 @@ class Reply
 
   def get_message
     if @source.kind == Source.kinds[:adding_ingredients]
-      p @source.ingredients
       reply = @source.ingredients.inject { |text, ingredient| text + 'と' + ingredient }
-      p reply
+      @@is_ingredients = false
       return create_text(reply + 'でお料理を検索しますね！')
     end
 

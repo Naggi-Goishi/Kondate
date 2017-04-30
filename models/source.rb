@@ -61,14 +61,10 @@ private
   end
 
   def get_ingredients
-    p @text
-    p !!@text.match(/、/)
-    p !!@text.match(/,/)
-    p !!@text.match(/\n/)
     if @text.match(/、/)
       return @text.split('、')
     elsif @text.match(/\n/)
-      return @text.split('、')
+      return @text.split('\n')
     else
       return [@text]
     end
