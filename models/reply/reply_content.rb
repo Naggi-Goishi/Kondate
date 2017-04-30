@@ -41,7 +41,7 @@ private
       Column.new(
         recipe.thumbnail_image_url,
         recipe.name,
-        @source.ingredients.try(:contents).try(:show) || '',
+        @source.ingredients.try(:contents).try(:show) || '説明無し',
         [Action.new('uri', 'サイトへ', recipe.url)]
       )
     end
