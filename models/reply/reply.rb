@@ -30,7 +30,7 @@ class Reply
       actions = [Action.new('uri', 'サイトへ', 'https://chefgohan.gnavi.co.jp/detail/90')]
       columns = [Column.new(thumbnail_image_url, title, column_text, actions)]
       @@is_ingredients = false
-      Carousel.new(columns).build
+      return Carousel.new(columns).build
     end
 
     case @event
