@@ -1,4 +1,3 @@
-require 'pry'
 class ReplyContent
 
   def initialize(source)
