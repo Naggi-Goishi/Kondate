@@ -28,7 +28,7 @@ class Source
 
   def initialize(text, flags=FLAGS)
     FLAGS.merge(flags)
-
+    p flags
     @text = text
     @recipe_kind = get_recipe_kind
     if FLAGS[:is_ingridients]
