@@ -1,5 +1,4 @@
 require 'active_support/concern'
-require 'pry'
 
 class Recipe < ActiveRecord::Base
   module Scraping
