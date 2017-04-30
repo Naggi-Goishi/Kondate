@@ -83,7 +83,7 @@ private
     when Line::Bot::Event::Postback
       Source.new(@event['postback']['data'])
     when Line::Bot::Event::Message
-      Source.new(@event.message['text'], self.flags)
+      Source.new(@event.message['text'], Reply.flags)
     end
   end
 
