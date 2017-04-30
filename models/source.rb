@@ -14,14 +14,19 @@ class Source
 
   attr_accessor :ingredients, :kind, :kind_en, :recipe_kind, :klass, :text
 
-  def initialize(text)
+  def initialize(text, is_ingredients)
     @text = text
     @recipe_kind = get_recipe_kind
-    @kind = get_kind
+    if is_ingredients 
+      @ingredients = get_ingredients
+      @kind = @@kinds[:adding_ingredients]
+    else
+      @kind = get_kind
+    end
     @kind_en = get_en(@@kinds, @kind)
   end
 
-  def self.kind
+  def self.kinds
     @@kinds
   end
 
@@ -53,6 +58,16 @@ private
       return en if kind == ja 
     end
     false
+  end
+
+  def get_ingredients
+    if @text.match(/、/)
+      return @text.split('、')
+    elsif @text.match(/\n/)
+      return @text.split('、')
+    else
+      return [@text]
+    end
   end
 
   def text_contains(string)

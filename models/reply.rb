@@ -4,6 +4,7 @@ class Reply
     adding_ingredients: '了解です！どのような材料がありますか？',
     removing_ingredients: '間違えでしたね！どの材料が必要ないですか？'
   }
+  @@is_ingredients = false
 
   def initialize(client, events)
     @client = client
@@ -53,10 +54,16 @@ class Reply
   end
 
   def get_message
+    if @source.kind == Source.kinds[adding_ingredients]
+      reply = @source.ingredients.inject { |text, ingredient| text + 'と' + ingredient }
+      return create_text(reply[0..reply.length] + 'でお料理を検索しますね！')
+    end
+
     case @event
     when Line::Bot::Event::Postback
       case @source.text
       when 'ingredient'
+        @@is_ingredients = true
         create_text("材料から考えるのですね！お使いになる材料を、「改行」もしくは「、」でわけて送ってください！\n\n 例１）\n人参\n玉ねぎ\nじゃがいも\n\n例２)\n人参、玉ねぎ、じゃがいも")
       when 'recipe'
         create_text('お調べになりたい料理名を教えてください！')
@@ -64,10 +71,8 @@ class Reply
         create_text("現在、９つの中から検索いただけます！どれにしますか？\n\n・和食\n・洋食\n・中華\n・フレンチ\n・イタリアン\n・スパニッシュ\n・アジアン\n・エスニック\n・デザート")
       end
     when Line::Bot::Event::Message
-      p "Line::Bot::Event::Messageのメッセージを受信しました"
-      p @source.kind
       case @source.kind
-      when Source.kind[:asking_recipe]
+      when Source.kinds[:asking_recipe]
         p create_button
         return @source.recipe_kind ? create_text(get_recipe) : create_button
       else
@@ -85,7 +90,7 @@ class Reply
     when Line::Bot::Event::Postback
       Source.new(@event['postback']['data'])
     when Line::Bot::Event::Message
-      Source.new(@event.message['text'])
+      Source.new(@event.message['text'], @@is_ingredients)
     end
   end
 
