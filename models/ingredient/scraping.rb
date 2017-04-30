@@ -8,12 +8,13 @@ class Ingredient < ActiveRecord::Base
     class_methods do
       def import
         Recipe.all.each do |recipe|
-          save_ingredients(recipe)
+          p '\nimporing ingredients'
+          import_ingredients(recipe)
         end
       end
 
       private
-        def save_ingredients(recipe)
+        def import_ingredients(recipe)
           page = AGENT.get(recipe.url)
           rows = page.search('.table_recipes tbody tr')
           rows[1..rows.length].map do |row|
@@ -24,6 +25,7 @@ class Ingredient < ActiveRecord::Base
             ingredient = Ingredient.where(name: name).first_or_initialize
             ingredient.recipes << recipe
             ingredient.save
+            print '#'
           end
         end
 

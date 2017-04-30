@@ -10,11 +10,6 @@ class KondateChan < Sinatra::Base
 
   set :database_file, "./config/database.yml"
 
-  get '/thumbnail_image_url/import' do
-    Recipe.import_thumbnail_image_url
-    'success'
-  end
-
   post '/callback' do
     body = request.body.read
     events = get_events(request, body)

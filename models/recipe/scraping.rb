@@ -9,8 +9,11 @@ class Recipe < ActiveRecord::Base
 
     class_methods do
       def import
+        p '\nimporting names'
         import_names
+        p '\nimporting recipe_kind_id'
         import_recipe_kind_id
+        p '\nimporting thumbnail_image_url'
         import_thumbnail_image_url
       end
 
@@ -23,6 +26,7 @@ class Recipe < ActiveRecord::Base
           name = get_name_from_names(names, i)
           url = get_url_from_urls(urls, i)
           Recipe.where(name: name, url: url).first_or_initialize.save
+          print '#'
         end
       end
 
@@ -33,6 +37,7 @@ class Recipe < ActiveRecord::Base
             recipe = Recipe.where(url: BASE_URL + url[:href]).first_or_initialize
             recipe.recipe_kind = kind
             recipe.save
+            print '#'
           end
         end
       end
@@ -43,6 +48,7 @@ class Recipe < ActiveRecord::Base
           image = page.search('#mainimg_detail img')
           recipe.thumbnail_image_url = image[0][:src]
           recipe.save
+          print '#'
         end
       end
 
