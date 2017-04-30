@@ -7,7 +7,7 @@ class Recipe < ActiveRecord::Base
   scope :random, -> (num) { order('RAND()')[0..num] }
   scope :where_ingredient_name, -> (name) { joins(:ingredients).where(ingredients: { name: name }) }
   scope :where_ingredients, -> (ingredients) {
-    where_ingredient_name(ingredients.first.name).select do |recipe|
+    where_ingredient_name(ingredients.first.name).random(-1).select do |recipe|
       ingredients[1..-1].each { |ingredient| recipe.has_ingredient?(ingredient) }
     end
   }
