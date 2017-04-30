@@ -5,6 +5,7 @@ class ReplyContent
   end
 
   def ingredients
+    return 'すみません、該当するレシピがありませんでした。' if @source.ingredients
     names   = @source.ingredients.contents.pluck(:name)
     recipes = Recipe.where_ingredients_names(names).random(4)
     columns = recipes_to_columns(recipes)

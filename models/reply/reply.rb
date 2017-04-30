@@ -27,7 +27,6 @@ class Reply
     @event  = events.first
     @source = get_source
     @content = get_content
-    p @content
   end
 
   def send
@@ -46,7 +45,6 @@ private
   def get_content
     p @@source_is_ingredients
     if @@source_is_ingredients
-      p ReplyContent.new(@source).ingredients
       ReplyContent.new(@source).ingredients
     else
       case @event
