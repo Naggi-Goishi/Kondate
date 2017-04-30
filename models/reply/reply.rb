@@ -43,8 +43,7 @@ class Reply
 
 private
   def get_content
-    p @source == Source.kinds[:ingredients]
-    if @source == Source.kinds[:ingredients]
+    if @source.kind == Source.kinds[:ingredients]
       ReplyContent.new(@source).ingredients
     else
       case @event
