@@ -6,9 +6,12 @@ class ReplyContent
 
   def ingredients
     Reply.source_is_ingredients = false
-    return Message.new('すみません！該当するレシピがありませんでした。').build if @source.ingredients.contents.first.nil?
     names = @source.ingredients.contents.pluck(:name)
     recipes = names.inject(Recipe) { |result, name| result.where_ingredients_names(name) }
+    p recipes
+    if @source.ingredients.contents.first.nil? || recipes.blank?
+      return Message.new('すみません！該当するレシピがありませんでした。').build 
+    end
     columns = recipes_to_columns(recipes)
 
     Carousel.new(columns).build
