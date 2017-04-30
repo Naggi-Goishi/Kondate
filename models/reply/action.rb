@@ -6,10 +6,20 @@ class Action
   end
 
   def build
-    {
-      "type": @type,
-      "label": @label,
-      "data": @data
-    }
+    case type
+    when 'postback'
+      {
+        "type": @type,
+        "label": @label,
+        "data": @data
+      }
+    when 'message'
+    when 'uri'
+      {
+        "type": @type,
+        "label": @label,
+        "uri": @data
+      }
+    end
   end
 end
