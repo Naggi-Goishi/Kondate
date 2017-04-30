@@ -19,14 +19,7 @@ class Reply
   end
 
   def send
-    case @content
-    when Array
-      @content.each do |content|
-        @client.reply_message(@event['replyToken'], content)
-      end
-    else
-      @client.reply_message(@event['replyToken'], @content)
-    end
+    @client.reply_message(@event['replyToken'], @content)
   end
 
   def get_content
@@ -36,12 +29,8 @@ class Reply
       column_text = "玉子焼き\n野永 喜三夫シェフのレシピ"
       actions = [Action.new('uri', 'サイトへ', 'https://chefgohan.gnavi.co.jp/detail/90')]
       columns = [Column.new(thumbnail_image_url, title, column_text, actions)]
-      reply = @source.ingredients.inject { |text, ingredient| text + 'と' + ingredient }
       @@is_ingredients = false
-      content = [Message.new(reply + 'でお料理を検索しますね！').build]
-      content << Carousel.new(columns).build
-      p content
-      content
+      Carousel.new(columns).build
     end
 
     case @event
