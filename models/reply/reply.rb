@@ -40,6 +40,7 @@ class Reply
       @@is_ingredients = false
       content = [Message.new(reply + 'でお料理を検索しますね！')]
       content << Carousel.new(columns).build
+      p content
       content
     end
 
