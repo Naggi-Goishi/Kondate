@@ -8,13 +8,12 @@ class ReplyContent
     Reply.source_is_ingredients = false
     if @source.ingredients.contents.first
       ingredients = @source.ingredients.contents
-      recipes = Recipe.where_ingredients(ingredients)
+      recipes = Recipe.where_ingredients(ingredients).random(4)
       columns = recipes_to_columns(recipes)
     end
     if @source.ingredients.contents.first.nil? || recipes.blank?
       return Message.new('すみません！該当するレシピがありませんでした。').build 
     end
-    p columns
     Carousel.new(columns).build
   end
 
