@@ -11,21 +11,31 @@ class Source
     ethnic: 'エスニック',
     dessert: 'デザート'
   }
+
+  FLAGS = {
+    is_ingridients: false,
+    is_recipe: false,
+    is_recipe_kind: false
+  }
+
   Ingredients = Struct.new(:contents) do
     def show
       (contents.inject('') { |text, ingredient| text + 'と' + ingredient.name } + 'を使う料理')[1..-1]
     end
   end
 
+  attr_accessor :ingredients, :kind, :kind_en, :recipe_kind, :recipes, :klass, :text
 
-  attr_accessor :ingredients, :kind, :kind_en, :recipe_kind, :klass, :text
+  def initialize(text, flags)
+    FLAGS.merge(flags)
 
-  def initialize(text, is_ingredients = false)
     @text = text
     @recipe_kind = get_recipe_kind
-    if is_ingredients
+    if FLAGS[:is_ingridients]
       @ingredients = get_ingredients
       @kind = @@kinds[:ingredients]
+    elsif FLAGS[:is_recipe]
+      @recipes = Recipe.where(name: @text).random(4)
     else
       @kind = get_kind
     end
@@ -54,7 +64,7 @@ private
 
   def get_recipe_kind
     @@recipe_kinds.each do |_, recipe_kind|
-      return recipe_kind if text_contains(recipe_kind)
+      return RecipeKind.find_by(name: recipe_kind) if text_contains(recipe_kind)
     end
     false
   end

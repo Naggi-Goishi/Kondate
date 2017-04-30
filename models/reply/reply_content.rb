@@ -5,11 +5,28 @@ class ReplyContent
   end
 
   def ingredients
-    return Message.new('すみません、該当するレシピがありませんでした。').build if @source.ingredients.contents.first.nil?
+    return Message.new('すみません！該当するレシピがありませんでした。').build if @source.ingredients.contents.first.nil?
     names   = @source.ingredients.contents.pluck(:name)
     recipes = Recipe.where_ingredients_names(names).random(4)
     columns = recipes_to_columns(recipes)
     Reply.source_is_ingredients = false
+
+    Carousel.new(columns).build
+  end
+
+  def recipe
+    return Message.new('すみません！該当するレシピがありませんでした。').build if @source.recipes.blank?
+    columns = recipes_to_columns(@source.recipes)
+    Reply.source_is_recipe = false
+
+    Carousel.new(columns).build
+  end
+
+  def ingredients
+    return Message.new('・・・認識できませんでした。９つの中から選んでくださいね！').build if @source.recipe_kind.nil?
+    recipes = Recipe.where_recipe_kinds_name(@source).random(4)
+    columns = recipes_to_columns(recipes)
+    Reply.source_is_recipe_kind = false
 
     Carousel.new(columns).build
   end
@@ -20,8 +37,10 @@ class ReplyContent
       Reply.source_is_ingredients = true
       Message.new(Reply::REPLYS[:ingredients]).build
     when 'recipe'
+      Reply.source_is_recipe = true
       Message.new(Reply::REPLYS[:recipe]).build
     when 'recipe_kind'
+      Reply.source_is_recipe_kind = true
       Message.new(Reply::REPLYS[:recipe_kind]).build
     end    
   end
