@@ -62,9 +62,9 @@ private
 
   def get_ingredients
     if @text.match(/、/)
-      return @text.split('、')
+      return @text.split(/、/)
     elsif @text.match(/\n/)
-      return @text.split('\n')
+      return @text.split(/\n/)
     else
       return [@text]
     end
