@@ -48,11 +48,11 @@ class Reply
       case @source.text
       when 'ingredient'
         @@is_ingredients = true
-        Message.new("材料から考えるのですね！お使いになる材料を、「改行」もしくは「、」でわけて送ってください！\n\n 例１）\n人参\n玉ねぎ\nじゃがいも\n\n例２)\n人参、玉ねぎ、じゃがいも")
+        Message.new("材料から考えるのですね！お使いになる材料を、「改行」もしくは「、」でわけて送ってください！\n\n 例１）\n人参\n玉ねぎ\nじゃがいも\n\n例２)\n人参、玉ねぎ、じゃがいも").build
       when 'recipe'
-        Message.new('お調べになりたい料理名を教えてください！')
+        Message.new('お調べになりたい料理名を教えてください！').build
       when 'recipe_kind'
-        Message.new("現在、９つの中から検索いただけます！どれにしますか？\n\n・和食\n・洋食\n・中華\n・フレンチ\n・イタリアン\n・スパニッシュ\n・アジアン\n・エスニック\n・デザート")
+        Message.new("現在、９つの中から検索いただけます！どれにしますか？\n\n・和食\n・洋食\n・中華\n・フレンチ\n・イタリアン\n・スパニッシュ\n・アジアン\n・エスニック\n・デザート").build
       end
     when Line::Bot::Event::Message
       case @source.kind
