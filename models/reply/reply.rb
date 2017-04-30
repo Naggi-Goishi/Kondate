@@ -24,7 +24,7 @@ class Reply
 
   def get_content
     if @source.kind == Source.kinds[:adding_ingredients]
-      recipes = Recipe.where_ingredients(@source.ingredients).random(5)
+      recipes = Recipe.where_ingredients(@source.ingredients).random_to(5)
       columns = recipes.map do |recipe|
         Column.new(
           recipe.thumbnail_image_url,
