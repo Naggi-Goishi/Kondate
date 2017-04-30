@@ -1,15 +1,26 @@
 require_relative './action'
 require_relative './message'
 require_relative './button'
+require_relative './reply_content'
 require_relative './carousel/carousel'
 
 class Reply
-  @@replys = {
+  REPLYS = {
     asking_recipe: "献立ですか？本日の献立候補のリストを送りますね！\n\n",
-    adding_ingredients: '了解です！どのような材料がありますか？',
-    removing_ingredients: '間違えでしたね！どの材料が必要ないですか？'
+    ingredients: "材料から考えるのですね！お使いになる材料を、「改行」もしくは「、」でわけて送ってください！\n\n 例１）\n人参\n玉ねぎ\nじゃがいも\n\n例２)\n人参、玉ねぎ、じゃがいも",
+    recipe: 'お調べになりたい料理名を教えてください！',
+    recipe_kind: "現在、９つの中から検索いただけます！どれにしますか？\n\n・和食\n・洋食\n・中華\n・フレンチ\n・イタリアン\n・スパニッシュ\n・アジアン\n・エスニック\n・デザート"
   }
-  @@is_ingredients = false
+  MENU_BUTTON = {
+    title: 'メニュー',
+    text: '献立ですね！今日のご飯を一緒に考えましょう！',
+    actions: [
+        Action.new('postback', '材料から', 'ingredient'),
+        Action.new('postback', '料理名から', 'recipe'),
+        Action.new('postback', '種類から', 'recipe_kind')
+      ]
+  }
+  @@source_is_ingredients = false
 
   def initialize(client, events)
     @client = client
@@ -22,52 +33,25 @@ class Reply
     @client.reply_message(@event['replyToken'], @content)
   end
 
-  def get_content
-    if @source.kind == Source.kinds[:adding_ingredients]
-      recipes = Recipe.where_ingredients_name(@source.ingredients).random_to(4)
-      columns = recipes.map do |recipe|
-        Column.new(
-          recipe.thumbnail_image_url,
-          recipe.name,
-          @source.ingredients.inject { |text, ingredient| text + 'と' + ingredient } + 'を使う料理',
-          [Action.new('uri', 'サイトへ', recipe.url)]
-        )
-      end
-      @@is_ingredients = false
-      p Carousel.new(columns).build
-      return Carousel.new(columns).build
-    end
-
-    case @event
-    when Line::Bot::Event::Postback
-      case @source.text
-      when 'ingredient'
-        @@is_ingredients = true
-        Message.new("材料から考えるのですね！お使いになる材料を、「改行」もしくは「、」でわけて送ってください！\n\n 例１）\n人参\n玉ねぎ\nじゃがいも\n\n例２)\n人参、玉ねぎ、じゃがいも").build
-      when 'recipe'
-        Message.new('お調べになりたい料理名を教えてください！').build
-      when 'recipe_kind'
-        Message.new("現在、９つの中から検索いただけます！どれにしますか？\n\n・和食\n・洋食\n・中華\n・フレンチ\n・イタリアン\n・スパニッシュ\n・アジアン\n・エスニック\n・デザート").build
-      end
-    when Line::Bot::Event::Message
-      case @source.kind
-      when Source.kinds[:asking_recipe]
-        title = 'メニュー'
-        text = '献立ですね！今日のご飯を一緒に考えましょう！'
-        actions = [
-          Action.new('postback', '材料から', 'ingredient'),
-          Action.new('postback', '料理名から', 'recipe'),
-          Action.new('postback', '種類から', 'recipe_kind')
-        ]
-        return @source.recipe_kind ? Message.new(get_recipe).build : Button.new(title, text, actions).build
-      else
-        return Message.new(@@replys[@source.kind_en])
-      end
-    end
+  def self.source_is_ingredients
+    @@source_is_ingredients
   end
 
-  def get_recipe
-    @@replys[@source.kind_en] + "・#{random_recipe(@source.recipe_kind.to_s)}"
+  def self.source_is_ingredients= (source_is_ingredients)
+    @@source_is_ingredients = source_is_ingredients
+  end
+private
+  def get_content
+    if @source == Source.kinds[:ingredients]
+      ReplyContent.new(@source).ingredients
+    else
+      case @event
+      when Line::Bot::Event::Postback
+        ReplyContent.new(@source).postback
+      when Line::Bot::Event::Message
+        ReplyContent.new(@source).message
+      end
+    end
   end
 
   def get_source
@@ -75,16 +59,7 @@ class Reply
     when Line::Bot::Event::Postback
       Source.new(@event['postback']['data'])
     when Line::Bot::Event::Message
-      Source.new(@event.message['text'], @@is_ingredients)
-    end
-  end
-
-private
-  def random_recipe(recipe_kind)
-    if recipe_kind == 'false'
-      Recipe.main.random.build
-    else
-      Recipe.where_recipe_kinds_name(recipe_kind).random.build
+      Source.new(@event.message['text'], @@source_is_ingredients)
     end
   end
 end

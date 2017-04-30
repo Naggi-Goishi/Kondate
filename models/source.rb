@@ -1,5 +1,5 @@
 class Source
-  @@kinds = { asking_recipe: '献立', adding_ingredients: '材料追加', removing_ingredients: '材料削除'}
+  @@kinds = { asking_recipe: '献立', ingredients: '材料'}
   @@recipe_kinds = {
     japanese: '和食',
     western: '洋食',
@@ -11,15 +11,21 @@ class Source
     ethnic: 'エスニック',
     dessert: 'デザート'
   }
+  Ingredients = Struct.new(:contents) do
+    def show
+      contents.inject { |text, ingredient| text + 'と' + ingredient.name } + 'を使う料理'
+    end
+  end
+
 
   attr_accessor :ingredients, :kind, :kind_en, :recipe_kind, :klass, :text
 
   def initialize(text, is_ingredients = false)
     @text = text
     @recipe_kind = get_recipe_kind
-    if is_ingredients 
+    if is_ingredients
       @ingredients = get_ingredients
-      @kind = @@kinds[:adding_ingredients]
+      @kind = @@kinds[:ingredients]
     else
       @kind = get_kind
     end
@@ -61,13 +67,16 @@ private
   end
 
   def get_ingredients
-    if @text.match(/、/)
-      return @text.split(/、/)
+    ingredients = if @text.match(/、/)
+      @text.split(/、/)
     elsif @text.match(/\n/)
-      return @text.split(/\n/)
+      @text.split(/\n/)
     else
-      return [@text]
+      [@text]
     end
+
+    ingredients.map! { |ingredient| Ingredient.find_by(name: ingredient) }
+    Ingredients.new(ingredients)
   end
 
   def text_contains(string)
