@@ -15,7 +15,7 @@ describe ReplyContent do
         expect(result).to include carousel
       end
 
-      it '該当するレシピがない場合' do
+      it '該当する材料がない場合' do
         recipe
         source = Source.new('ほげ', {is_ingredients: true})
         result = ReplyContent.new(source).ingredients

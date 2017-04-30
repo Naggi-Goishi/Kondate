@@ -1,3 +1,4 @@
+require 'pry'
 class ReplyContent
 
   def initialize(source)
@@ -6,13 +7,14 @@ class ReplyContent
 
   def ingredients
     Reply.source_is_ingredients = false
-    names = @source.ingredients.contents.pluck(:name)
-    recipes = names.inject(Recipe) { |result, name| result.where_ingredients_names(name) }
-    p recipes
+    if @source.ingredients.contents.first
+      ingredients = @source.ingredients.contents
+      recipes = Recipe.where_ingredients(ingredients)
+      columns = recipes_to_columns(recipes)
+    end
     if @source.ingredients.contents.first.nil? || recipes.blank?
       return Message.new('すみません！該当するレシピがありませんでした。').build 
     end
-    columns = recipes_to_columns(recipes)
 
     Carousel.new(columns).build
   end
