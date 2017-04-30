@@ -1,5 +1,6 @@
 require_relative './action'
 require_relative './message'
+require_relative './button'
 require_relative './carousel/carousel'
 
 class Reply
