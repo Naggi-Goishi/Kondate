@@ -40,8 +40,10 @@ class Reply
   def self.source_is_ingredients= (source_is_ingredients)
     @@source_is_ingredients = source_is_ingredients
   end
+
 private
   def get_content
+    p @source == Source.kinds[:ingredients]
     if @source == Source.kinds[:ingredients]
       ReplyContent.new(@source).ingredients
     else
