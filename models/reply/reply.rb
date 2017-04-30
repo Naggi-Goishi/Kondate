@@ -24,7 +24,7 @@ class Reply
         @client.reply_message(@event['replyToken'], content)
       end
     else
-      @content.reply_message(@event['replyToken'], @content)
+      @client.reply_message(@event['replyToken'], @content)
     end
   end
 
