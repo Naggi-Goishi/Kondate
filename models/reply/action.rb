@@ -6,7 +6,7 @@ class Action
   end
 
   def build
-    case type
+    case @type
     when 'postback'
       {
         "type": 'postback',
