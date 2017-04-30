@@ -37,7 +37,7 @@ class Reply
       columns = [Column.new(thumbnail_image_url, title, column_text, actions)]
       reply = @source.ingredients.inject { |text, ingredient| text + 'と' + ingredient }
       @@is_ingredients = false
-      content = [create_text(reply + 'でお料理を検索しますね！')]
+      content = [Message.new(reply + 'でお料理を検索しますね！')]
       content << Carousel.new(columns).build
       content
     end
@@ -47,11 +47,11 @@ class Reply
       case @source.text
       when 'ingredient'
         @@is_ingredients = true
-        create_text("材料から考えるのですね！お使いになる材料を、「改行」もしくは「、」でわけて送ってください！\n\n 例１）\n人参\n玉ねぎ\nじゃがいも\n\n例２)\n人参、玉ねぎ、じゃがいも")
+        Message.new("材料から考えるのですね！お使いになる材料を、「改行」もしくは「、」でわけて送ってください！\n\n 例１）\n人参\n玉ねぎ\nじゃがいも\n\n例２)\n人参、玉ねぎ、じゃがいも")
       when 'recipe'
-        create_text('お調べになりたい料理名を教えてください！')
+        Message.new('お調べになりたい料理名を教えてください！')
       when 'recipe_kind'
-        create_text("現在、９つの中から検索いただけます！どれにしますか？\n\n・和食\n・洋食\n・中華\n・フレンチ\n・イタリアン\n・スパニッシュ\n・アジアン\n・エスニック\n・デザート")
+        Message.new("現在、９つの中から検索いただけます！どれにしますか？\n\n・和食\n・洋食\n・中華\n・フレンチ\n・イタリアン\n・スパニッシュ\n・アジアン\n・エスニック\n・デザート")
       end
     when Line::Bot::Event::Message
       case @source.kind
@@ -65,7 +65,7 @@ class Reply
         ]
         return @source.recipe_kind ? Message.new(get_recipe).build : Button.new(title, text, actions).build
       else
-        return create_text(@@replys[@source.kind_en])
+        return Message.new(@@replys[@source.kind_en])
       end
     end
   end
