@@ -26,7 +26,7 @@ class Source
 
   attr_accessor :ingredients, :kind, :kind_en, :recipe_kind, :recipes, :klass, :text
 
-  def initialize(text, FLAGS=flags)
+  def initialize(text, flags=FLAGS)
     FLAGS.merge(flags)
 
     @text = text
