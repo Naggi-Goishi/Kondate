@@ -43,7 +43,7 @@ class Reply
 
 private
   def get_content
-    if @source.kind == Source.kinds[:ingredients]
+    if @@source_is_ingredients
       ReplyContent.new(@source).ingredients
     else
       case @event
@@ -60,7 +60,6 @@ private
     when Line::Bot::Event::Postback
       Source.new(@event['postback']['data'])
     when Line::Bot::Event::Message
-      p @@source_is_ingredients
       Source.new(@event.message['text'], @@source_is_ingredients)
     end
   end
