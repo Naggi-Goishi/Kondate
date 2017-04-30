@@ -8,11 +8,19 @@ describe ReplyContent do
   describe 'インスタンスメソッド' do
     context 'ingredients method' do
       it '適当なcarouselを返す' do
-        carousel = Fixtures.carousel(recipe)
+        carousel = Fixtures.carousel(recipe, ingredient.name + 'を使う料理')
         source = Source.new(ingredient.name, true)
         result = ReplyContent.new(source).ingredients
 
-        expect(result).to eq carousel
+        expect(result).to include carousel
+      end
+
+      it '該当するレシピがない場合' do
+        recipe
+        source = Source.new('ほげ', true)
+        result = ReplyContent.new(source).ingredients
+
+        expect(result).to eq Message.new('すみません、該当するレシピがありませんでした。').build
       end
     end
 
@@ -48,11 +56,11 @@ describe ReplyContent do
       end
 
       it 'Sourceがrecipe_kindを含む時、適当なCarouselを返す' do
-        carousel = Fixtures.carousel(recipe)
+        carousel = Fixtures.carousel(recipe, '説明無し')
         source = Source.new('和食でなにかおいしいものある？')
         result = ReplyContent.new(source).message
 
-        expect(result).to eq carousel
+        expect(result).to include carousel
       end
     end
   end
