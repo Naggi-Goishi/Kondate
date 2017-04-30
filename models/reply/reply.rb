@@ -60,6 +60,7 @@ private
     when Line::Bot::Event::Postback
       Source.new(@event['postback']['data'])
     when Line::Bot::Event::Message
+      p @@source_is_ingredients
       Source.new(@event.message['text'], @@source_is_ingredients)
     end
   end
