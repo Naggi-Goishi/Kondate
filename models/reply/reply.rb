@@ -38,7 +38,7 @@ class Reply
       columns = [Column.new(thumbnail_image_url, title, column_text, actions)]
       reply = @source.ingredients.inject { |text, ingredient| text + 'と' + ingredient }
       @@is_ingredients = false
-      content = [Message.new(reply + 'でお料理を検索しますね！')]
+      content = [Message.new(reply + 'でお料理を検索しますね！').build]
       content << Carousel.new(columns).build
       p content
       content
