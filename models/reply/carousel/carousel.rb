@@ -1,5 +1,4 @@
 require_relative './column'
-require_relative './action'
 
 class Carousel
   def initialize(columns)
