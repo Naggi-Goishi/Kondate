@@ -88,7 +88,7 @@ private
 
   def self.flags
     {
-      is_ingridients: @@source_is_ingredients,
+      is_ingredients: @@source_is_ingredients,
       is_recipe: @@source_is_recipe,
       is_recipe_kind: @@source_is_recipe_kind
     }
