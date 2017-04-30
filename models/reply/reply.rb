@@ -39,6 +39,7 @@ class Reply
       @@is_ingredients = false
       content = [create_text(reply + 'でお料理を検索しますね！')]
       content << Carousel.new(columns).build
+      content
     end
 
     case @event
