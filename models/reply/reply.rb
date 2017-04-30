@@ -34,6 +34,8 @@ class Reply
         )
       end
       @@is_ingredients = false
+      p columns
+      p Carousel.new(columns).build
       return Carousel.new(columns).build
     end
 
