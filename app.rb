@@ -20,7 +20,6 @@ class KondateChan < Sinatra::Base
     events = get_events(request, body)
     validate_signature(request, body)
 
-    puts 'recieved a message ....... '
     Reply.new(client, events).send
 
     "OK"
