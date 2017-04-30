@@ -22,7 +22,7 @@ class ReplyContent
     Carousel.new(columns).build
   end
 
-  def ingredients
+  def recipe_kind
     return Message.new('・・・認識できませんでした。９つの中から選んでくださいね！').build if @source.recipe_kind.nil?
     recipes = Recipe.where_recipe_kinds_name(@source).random(4)
     columns = recipes_to_columns(recipes)
