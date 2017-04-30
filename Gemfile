@@ -8,3 +8,7 @@ gem 'activerecord'
 gem 'mysql2'
 gem 'rake'
 gem 'mechanize'
+
+group :development do 
+  gem 'pry'
+end

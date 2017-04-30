@@ -1,4 +1,5 @@
 require 'active_support/concern'
+require 'pry'
 
 class Recipe < ActiveRecord::Base
   module Scraping
@@ -11,6 +12,7 @@ class Recipe < ActiveRecord::Base
       def import
         import_names
         import_recipe_kind_id
+        import_thumbnail_image_url
       end
 
       def import_names
@@ -33,6 +35,15 @@ class Recipe < ActiveRecord::Base
             recipe.recipe_kind = kind
             recipe.save
           end
+        end
+      end
+
+      def import_thumbnail_image_url
+        Recipe.all.each do |recipe|
+          page = AGENT.get(recipe.url)
+          image = page.search('#mainimg_detail img')
+          recipe.thumbnail_image_url = image[0][:src]
+          recipe.save
         end
       end
 

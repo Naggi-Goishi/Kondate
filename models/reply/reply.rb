@@ -24,11 +24,15 @@ class Reply
 
   def get_content
     if @source.kind == Source.kinds[:adding_ingredients]
-      thumbnail_image_url = 'https://c-chefgohan.gnst.jp/imgdata/recipe/90/00/90/rc732x546_1209090617_e73e7d03237e70e759dfd90c84c24733.jpg'
-      title = '卵焼き'
-      column_text = "玉子焼き\n野永 喜三夫シェフのレシピ"
-      actions = [Action.new('uri', 'サイトへ', 'https://chefgohan.gnavi.co.jp/detail/90')]
-      columns = [Column.new(thumbnail_image_url, title, column_text, actions)]
+      recipes = Recipe.where_ingredients(@source.ingredients).random(5)
+      columns = recipes.map do |recipe|
+        Column.new(
+          recipe.thumbnail_image_url,
+          recipe.name,
+          '',
+          [Action.new('uri', 'サイトへ', recipe.url)]
+        )
+      end
       @@is_ingredients = false
       return Carousel.new(columns).build
     end
@@ -77,9 +81,9 @@ class Reply
 private
   def random_recipe(recipe_kind)
     if recipe_kind == 'false'
-      Recipe.main.random.show
+      Recipe.main.random.build
     else
-      Recipe.where_recipe_kind(recipe_kind).random.show
+      Recipe.where_recipe_kinds(recipe_kind).random.build
     end
   end
 end

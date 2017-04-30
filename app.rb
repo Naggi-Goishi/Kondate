@@ -10,8 +10,8 @@ class KondateChan < Sinatra::Base
 
   set :database_file, "./config/database.yml"
 
-  get 'ingredient/import' do
-    Ingredient.import
+  get '/thumbnail_image_url/import' do
+    Recipe.import_thumbnail_image_url
     'success'
   end
 
