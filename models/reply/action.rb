@@ -9,14 +9,14 @@ class Action
     case type
     when 'postback'
       {
-        "type": @type,
+        "type": 'postback',
         "label": @label,
         "data": @data
       }
     when 'message'
     when 'uri'
       {
-        "type": @type,
+        "type": 'uri',
         "label": @label,
         "uri": @data
       }
