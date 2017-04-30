@@ -14,7 +14,7 @@ class Source
 
   attr_accessor :ingredients, :kind, :kind_en, :recipe_kind, :klass, :text
 
-  def initialize(text, is_ingredients)
+  def initialize(text, is_ingredients = false)
     @text = text
     @recipe_kind = get_recipe_kind
     if is_ingredients 
