@@ -29,12 +29,11 @@ class Reply
         Column.new(
           recipe.thumbnail_image_url,
           recipe.name,
-          '',
+          @source.ingredients.inject { |text, ingredient| text + 'と' + ingredient } + 'を使う料理',
           [Action.new('uri', 'サイトへ', recipe.url)]
         )
       end
       @@is_ingredients = false
-      p columns
       p Carousel.new(columns).build
       return Carousel.new(columns).build
     end
