@@ -7,8 +7,8 @@ class Ingredient < ActiveRecord::Base
 
     class_methods do
       def import
+        p "\nimporing ingredients"
         Recipe.all.each do |recipe|
-          p '\nimporing ingredients'
           import_ingredients(recipe)
         end
       end
