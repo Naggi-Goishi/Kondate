@@ -9,7 +9,7 @@ describe ReplyContent do
     context 'ingredients method' do
       it '適当なcarouselを返す' do
         carousel = Fixtures.carousel(recipe, ingredient.name + 'を使う料理')
-        source = Source.new(ingredient.name, true)
+        source = Source.new(ingredient.name, {is_ingredients: true})
         result = ReplyContent.new(source).ingredients
 
         expect(result).to include carousel
@@ -17,10 +17,10 @@ describe ReplyContent do
 
       it '該当するレシピがない場合' do
         recipe
-        source = Source.new('ほげ', true)
+        source = Source.new('ほげ', {is_ingredients: true})
         result = ReplyContent.new(source).ingredients
 
-        expect(result).to eq Message.new('すみません、該当するレシピがありませんでした。').build
+        expect(result).to eq Message.new('すみません！該当するレシピがありませんでした。').build
       end
     end
 

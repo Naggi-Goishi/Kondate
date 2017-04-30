@@ -61,7 +61,6 @@ class Reply
 
 private
   def get_content
-    p @@source_is_ingredients
     if @@source_is_ingredients
       ReplyContent.new(@source).ingredients
     elsif @@source_is_recipe

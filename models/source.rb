@@ -12,7 +12,7 @@ class Source
     dessert: 'デザート'
   }
 
-  FLAGS = {
+  DEFAULT_FLAGS = {
     is_ingridients: false,
     is_recipe: false,
     is_recipe_kind: false
@@ -26,19 +26,16 @@ class Source
 
   attr_accessor :ingredients, :kind, :kind_en, :recipe_kind, :recipes, :klass, :text
 
-  def initialize(text, flags=FLAGS)
-    FLAGS.merge(flags)
-    p flags
+  def initialize(text, flags=DEFAULT_FLAGS)
     @text = text
     @recipe_kind = get_recipe_kind
-    if FLAGS[:is_ingridients]
+    if flags[:is_ingredients]
       @ingredients = get_ingredients
       @kind = @@kinds[:ingredients]
-    elsif FLAGS[:is_recipe]
+    elsif flags[:is_recipe]
       @recipes = Recipe.where(name: @text).random(4)
-    else
-      @kind = get_kind
     end
+    @kind = get_kind
     @kind_en = get_en(@@kinds, @kind)
   end
 

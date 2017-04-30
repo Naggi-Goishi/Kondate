@@ -16,7 +16,7 @@ class ReplyContent
 
   def recipe
     Reply.source_is_recipe = false
-    p  @source.recipes
+    p @source.recipes
     return Message.new('すみません！該当するレシピがありませんでした。').build if @source.recipes.blank?
     columns = recipes_to_columns(@source.recipes)
 
@@ -26,7 +26,7 @@ class ReplyContent
   def recipe_kind
     Reply.source_is_recipe_kind = false
     return Message.new('・・・認識できませんでした。９つの中から選んでくださいね！').build if @source.recipe_kind.nil?
-    recipes = Recipe.where_recipe_kinds_name(@source).random(4)
+    recipes = Recipe.where_recipe_kinds_name(@source.recipe_kind.name).random(4)
     columns = recipes_to_columns(recipes)
 
     Carousel.new(columns).build
@@ -49,7 +49,7 @@ class ReplyContent
   def message
     case @source.kind
     when Source.kinds[:asking_recipe]
-      recipes = Recipe.where_recipe_kinds_name(@source.recipe_kind).random(4)
+      recipes = Recipe.where_recipe_kinds_name(@source.recipe_kind.name).random(4)
       columns = recipes_to_columns(recipes)
 
       @source.recipe_kind ? Carousel.new(columns).build : menu_button.build
