@@ -4,6 +4,7 @@ class CreateRecipes < ActiveRecord::Migration[5.1]
       t.string :name
       t.string :url
       t.string :thumbnail_image_url
+      t.references :recipe_kind
     end
   end
 end
