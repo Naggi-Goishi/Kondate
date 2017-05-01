@@ -1,5 +1,5 @@
 div.container
-  button onclick="submit(false)" 一括
+  button onclick="submit()" 一括
   table
     tr
       th 名前
@@ -11,23 +11,19 @@ div.container
         td
           input type='text' id=ingredient.id
         td
-          button onclick="submit(#{ingredient.id})" 保存
+          button onclick="submit()" 保存
 
 javascript: 
-  function submit(id) {
+  function submit() {
     const http = new XMLHttpRequest();
     const url = 'ingredients';
     let params = {}
 
-    if (id === false) {
-      document.querySelectorAll('input').forEach( function(input) {
-        if (!(input.value.length === 0)) {
-          params[input.id] = input.value
-        }
-      })
-    } else {
-      params[id] = document.getElementById(id).value
-    }
+    document.querySelectorAll('input').forEach(function(input) {
+      if (!(input.value.length === 0)) {
+        params[input.id] = input.value
+      }
+    })
 
     http.open("POST", url, true);
     http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
