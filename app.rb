@@ -25,7 +25,7 @@ class KondateChan < Sinatra::Base
 
   post '/ingredients' do
     data = JSON.parse(params.keys.first)
-    Ingredient.find(data['id']).update(hiragana: data['hiragana'])
+    data.each { |id, value| Ingredient.find(id).update(hiragana: value) }
 
     @ingredients = Ingredient.where(hiragana: nil)
 
