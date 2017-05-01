@@ -32,8 +32,8 @@ class Recipe < ActiveRecord::Base
 
       def import_recipe_kind_id
         kinds = PAGE.search('.autoheight4')
-        RecipeKind.all.each do |kind|
-          kinds[kind.id - 1].search('li a').each do |url|
+        RecipeKind.all.each.with_index do |kind, index|
+          kinds[index].search('li a').each do |url|
             recipe = Recipe.where(url: BASE_URL + url[:href]).first_or_initialize
             recipe.recipe_kind = kind
             recipe.save
