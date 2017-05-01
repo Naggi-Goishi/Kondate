@@ -3,15 +3,15 @@ require './app'
 
 namespace :scrape do
 
-  task :recipe do
+  task :recipes do
     Recipe.import
   end
 
-  task :recipe_kind do
+  task :recipe_kinds do
     RecipeKind.import
   end
 
-  task :ingredient do
+  task :ingredients do
     Ingredient.import
   end
 
@@ -21,8 +21,8 @@ namespace :scrape do
     Ingredient.import
   end
 
-  namespace :recipe do
-    task :names do
+  namespace :recipes do
+    task :name do
       Recipe.import_names
     end
 
@@ -35,7 +35,7 @@ namespace :scrape do
     end
   end
 
-  namespace :ingredient do
+  namespace :ingredients do
     task :hiragana do
       Ingredient.import_hiragana
     end
