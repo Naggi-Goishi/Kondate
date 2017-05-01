@@ -8,8 +8,8 @@ describe ReplyContent do
   describe 'インスタンスメソッド' do
     context 'ingredients method' do
       it '適当なcarouselを返す' do
-        carousel = Fixtures.carousel(recipe, ingredient.name + 'を使う料理')
-        source = Source.new(ingredient.name, {is_ingredients: true})
+        carousel = Fixtures.carousel(recipe)
+        source = Source.new(ingredient.name, is_ingredients: true)
         result = ReplyContent.new(source).ingredients
 
         expect(result).to include carousel
@@ -17,12 +17,49 @@ describe ReplyContent do
 
       it '該当する材料がない場合' do
         recipe
-        source = Source.new('ほげ', {is_ingredients: true})
+        source = Source.new('ほげ', is_ingredients: true)
         result = ReplyContent.new(source).ingredients
 
-        expect(result).to eq Message.new('すみません！該当するレシピがありませんでした。').build
+        expect(result).to eq Message.new(ReplyContent::NO_RECIPE).build
       end
     end
+
+    context 'recipe method' do
+      it '適当なcarouselを返す' do
+        carousel = Fixtures.carousel(recipe)
+        source = Source.new(recipe.name, is_recipe: true)
+        result = ReplyContent.new(source).recipe
+
+        expect(result).to include carousel
+      end
+
+      it '該当するレシピがない場合' do
+        recipe
+        source = Source.new('ほげ', is_recipe: true)
+        result = ReplyContent.new(source).ingredients
+
+        expect(result).to eq Message.new(ReplyContent::NO_RECIPE).build
+      end
+    end
+
+    context 'recipe_kind method' do
+      it '適当なcarouselを返す' do
+        carousel = Fixtures.carousel(recipe)
+        source = Source.new(recipe.recipe_kind.name, is_recipe_kind: true)
+        result = ReplyContent.new(source).recipe_kind
+
+        expect(result).to include carousel
+      end
+
+      it '該当するレシピがない場合' do
+        recipe
+        source = Source.new('ほげ', is_recipe_kind: true)
+        result = ReplyContent.new(source).recipe_kind
+
+        expect(result).to eq Message.new(ReplyContent::NO_RECIPE).build
+      end
+    end
+
 
     context 'postback method' do
       it 'Sourceがingredientな時、適当なcarouselを返す' do
@@ -56,7 +93,7 @@ describe ReplyContent do
       end
 
       it 'Sourceがrecipe_kindを含む時、適当なCarouselを返す' do
-        carousel = Fixtures.carousel(recipe, '説明無し')
+        carousel = Fixtures.carousel(recipe)
         source = Source.new('和食でなにかおいしいものある？')
         result = ReplyContent.new(source).message
 

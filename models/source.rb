@@ -27,7 +27,7 @@ class Source
       @ingredients = get_ingredients
       @kind = @@kinds[:ingredients]
     elsif flags[:is_recipe]
-      @recipes = Recipe.where(name: @text).random(4)
+      @recipes = Recipe.where(name: @text).limit(4)
     end
     @kind = get_kind
     @kind_en = get_en(@@kinds, @kind)
@@ -42,7 +42,7 @@ class Source
   end
 
   def ingredients_blank?
-    ingredients.compact.blank?
+    @ingredients.blank?
   end
 
 private
@@ -79,8 +79,8 @@ private
     else
       [@text]
     end
-
-    ingredients.map { |ingredient| Ingredient.find_by(name: ingredient) }
+    (ingredients.map! { |ingredient| Ingredient.where(hiragana: ingredient.to_hiragana) }).flatten!
+    Ingredients.new(ingredients)
   end
 
   def text_contains(string)

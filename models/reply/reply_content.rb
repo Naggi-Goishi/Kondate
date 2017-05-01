@@ -9,9 +9,8 @@ class ReplyContent
     Reply.source_is_ingredients = false
     recipes = []
 
-    if @source.ingredients_blank?
-      ingredients = @source.ingredients
-      recipes = Recipe.where_ingredients(ingredients)[0..4]
+    if !@source.ingredients_blank?
+      recipes = Recipe.has_ingredients(@source.ingredients)[0..4]
       columns = recipes_to_columns(recipes)
     end
     
@@ -27,8 +26,8 @@ class ReplyContent
 
   def recipe_kind
     Reply.source_is_recipe_kind = false
-    return Message.new('・・・認識できませんでした。９つの中から選んでくださいね！').build if @source.recipe_kind.nil?
-    recipes = Recipe.where_recipe_kinds_name(@source.recipe_kind.name).random(4)
+    return Message.new(NO_RECIPE).build if !@source.recipe_kind
+    recipes = Recipe.has_recipe_kinds_name(@source.recipe_kind.name).limit(5)
     columns = recipes_to_columns(recipes)
 
     Carousel.new(columns).build
@@ -51,7 +50,7 @@ class ReplyContent
   def message
     case @source.kind
     when Source.kinds[:asking_recipe]
-      recipes = Recipe.where_recipe_kinds_name(@source.recipe_kind.try(:name)).random(4)
+      recipes = Recipe.has_recipe_kinds_name(@source.recipe_kind.try(:name)).limit(5)
       columns = recipes_to_columns(recipes)
 
       @source.recipe_kind ? Carousel.new(columns).build : menu_button.build
@@ -64,7 +63,7 @@ private
       Column.new(
         recipe.thumbnail_image_url,
         recipe.name,
-        @source.ingredients.try(:show) || '説明無し',
+        recipe.ingredients.show || '説明無し',
         [Action.new('uri', 'サイトへ', recipe.url)]
       )
     end

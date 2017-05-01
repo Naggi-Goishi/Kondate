@@ -1,7 +1,7 @@
 class Fixtures
-  def self.carousel(recipe, text)
+  def self.carousel(recipe)
     actions = [Action.new('uri', 'サイトへ', recipe.url)]
-    columns = [Column.new(recipe.thumbnail_image_url, recipe.name, text, actions)]
+    columns = [Column.new(recipe.thumbnail_image_url, recipe.name, recipe.ingredients.show, actions)]
     Carousel.new(columns).build
   end
 
