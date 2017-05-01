@@ -63,7 +63,7 @@ private
       Column.new(
         recipe.thumbnail_image_url,
         recipe.name,
-        recipe.ingredients.show || '説明無し',
+        '説明無し',
         [Action.new('uri', 'サイトへ', recipe.url)]
       )
     end

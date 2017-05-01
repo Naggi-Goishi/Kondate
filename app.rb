@@ -14,10 +14,6 @@ class KondateChan < Sinatra::Base
 
   set :database_file, "./config/database.yml"
 
-  before do
-    @ingredients = Ingredient.where(hiragana: nil) if request.path_info == '/ingredients'
-  end
-
   get '/ingredients' do
     @ingredients = Ingredient.where(hiragana: nil)
 
