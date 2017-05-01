@@ -19,7 +19,7 @@ class Ingredients < ActiveRecord::Relation
   def show
     return false if blank?
     @records.inject('') do |text, ingredient|
-      return text + '...' if text.length > 55
+      return text + '...' if text.length > 30
       text + ingredient.name + '、'
     end[0..-2]
   end
