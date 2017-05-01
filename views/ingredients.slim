@@ -1,0 +1,28 @@
+div.container
+  table
+    tr
+      th 名前
+      th ひらがな
+      th ボタン
+    - @ingredients.each do |ingredient|
+      tr
+        td = ingredient.name
+        td
+          input type='text' id=ingredient.id
+        td
+          button onclick="submit(#{ingredient.id})" 保存
+
+javascript: 
+  function submit(id) {
+    const http = new XMLHttpRequest();
+    const url = 'ingredients';
+    const hiragana = document.getElementById(id).value
+    http.open("POST", url, true);
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    http.onreadystatechange = function(result) {
+      if (http.readyState == 4 && http.status == 200) {
+        document.querySelector('table').innerHTML = result.currentTarget.response;
+      }
+    };
+    http.send(JSON.stringify({id: id, hiragana: hiragana}));
+  }

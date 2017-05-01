@@ -1,0 +1,19 @@
+table {
+  width: 100%;
+  border: 1px solid #c0c0c0;
+}
+
+table td, table th {
+  border-bottom: 1px solid #c0c0c0;
+  border-right: 1px solid #c0c0c0;
+}
+
+.container {
+  width: 80%;
+  margin: auto;
+}
+
+button {
+  width: 60px;
+  height: 20px;
+}

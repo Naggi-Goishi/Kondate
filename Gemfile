@@ -8,6 +8,7 @@ gem 'activerecord'
 gem 'mysql2'
 gem 'rake'
 gem 'mechanize'
+gem 'slim'
 
 group :development, :test do 
   gem 'rspec'
