@@ -18,7 +18,10 @@ class Ingredients < ActiveRecord::Relation
 
   def show
     return false if blank?
-    (@records.inject("レシピ\n") { |text, ingredient| text + '・' + ingredient.name }).chomp
+    @records.inject("レシピ\n") do |text, ingredient|
+      return text + '...' if text.length > 55
+      text + ingredient.name + '、'
+    end[0..-2]
   end
 
   def inspect
