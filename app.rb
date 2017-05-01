@@ -24,15 +24,6 @@ class KondateChan < Sinatra::Base
     slim :ingredients
   end
 
-  post '/ingredients' do
-    data = JSON.parse(params.keys.first)
-    data.each { |id, value| Ingredient.find(id).update(hiragana: value) }
-
-    @ingredients = Ingredient.where(hiragana: nil)
-
-    slim :ingredients, layout: false
-  end
-
   post '/callback' do
     body = request.body.read
     events = get_events(request, body)
@@ -41,6 +32,14 @@ class KondateChan < Sinatra::Base
     Reply.new(client, events).send
 
     "OK"
+  end
+
+  post '/ingredients' do
+    data = JSON.parse(params.keys.first)
+    data.each { |id, value| Ingredient.find(id).update(hiragana: value) }
+
+    @ingredients = Ingredient.where(hiragana: nil)
+    slim :ingredients, layout: false
   end
 
 end
