@@ -10,6 +10,7 @@ class RecipeKind < ActiveRecord::Base
         agent = Mechanize.new
         page = agent.get(BASE_URL + '/base100')
 
+        puts 'importing recipe_kinds'
         import_kinds(page)
       end
 
@@ -18,6 +19,7 @@ class RecipeKind < ActiveRecord::Base
           kinds = page.search('.sectionLv02 .title-basic02 span')
           kinds.each do |kind|
             RecipeKind.where(name: kind.inner_text).first_or_initialize.save
+            print '#'
           end
         end
     end

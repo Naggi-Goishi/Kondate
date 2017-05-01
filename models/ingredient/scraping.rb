@@ -7,14 +7,14 @@ class Ingredient < ActiveRecord::Base
 
     class_methods do
       def import
-        p "\nimporing ingredients"
-        Recipe.all.each do |recipe|
-          import_ingredients(recipe)
-        end
+        puts "\nimporing ingredients"
+        import_ingredients
+        puts "\nimporing ingredients hiragana"
+        import_hiragana
       end
 
-      private
-        def import_ingredients(recipe)
+      def import_ingredients
+        Recipe.all.each do |recipe|
           page = AGENT.get(recipe.url)
           rows = page.search('.table_recipes tbody tr')
           rows[1..rows.length].map do |row|
@@ -28,12 +28,22 @@ class Ingredient < ActiveRecord::Base
             print '#'
           end
         end
+      end
 
-        def clean(string)
-          string = string.gsub(/（.+）|\(.+\)|\(.+）|（.+\)|\(.+\z|.+\.|（.+$|^[ABCDEFG]|\d{1}.+\z|[[:space:]]|├|└|■|下記３種のソースを混ぜる/, '')
-          string = string.gsub(/.\(.+\z/, '') + string.match(/.\(.+\z/)[0][0] if string.match(/.\(.+\z/)
-          string
+      def import_hiragana
+        Ingredient.all.each do |ingredient|
+          ingredient.hiragana = ingredient.name.to_hiragana
+          ingredient.save
+          print '#'
         end
+      end
+
+    private
+      def clean(string)
+        string = string.gsub(/（.+）|\(.+\)|\(.+）|（.+\)|\(.+\z|.+\.|（.+$|^[ABCDEFG]|[ABCDEFG]\z|\d{1}.+\z|[[:space:]]|├|└|■|┌|※|下記３種のソースを混ぜる|お好みの/, '')
+        string = string.gsub(/.\(.+\z/, '') + string.match(/.\(.+\z/)[0][0] if string.match(/.\(.+\z/)
+        string
+      end
     end
   end
 end

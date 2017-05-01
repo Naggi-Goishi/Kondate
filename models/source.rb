@@ -18,12 +18,6 @@ class Source
     is_recipe_kind: false
   }
 
-  Ingredients = Struct.new(:contents) do
-    def show
-      (contents.inject('') { |text, ingredient| text + 'と' + ingredient.name } + 'を使う料理')[1..-1]
-    end
-  end
-
   attr_accessor :ingredients, :kind, :kind_en, :recipe_kind, :recipes, :klass, :text
 
   def initialize(text, flags=DEFAULT_FLAGS)
@@ -45,6 +39,10 @@ class Source
 
   def self.recipe_kinds
     @@recipe_kinds
+  end
+
+  def ingredients_blank?
+    ingredients.compact.blank?
   end
 
 private
@@ -82,8 +80,7 @@ private
       [@text]
     end
 
-    ingredients.map! { |ingredient| Ingredient.find_by(name: ingredient) }
-    Ingredients.new(ingredients)
+    ingredients.map { |ingredient| Ingredient.find_by(name: ingredient) }
   end
 
   def text_contains(string)

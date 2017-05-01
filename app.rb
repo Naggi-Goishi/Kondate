@@ -3,6 +3,7 @@ require 'sinatra/base'
 require 'sinatra/activerecord'
 require 'mechanize'
 require_relative './app_helper'
+require_relative './meta/string'
 require_relative './models/base'
 
 class KondateChan < Sinatra::Base

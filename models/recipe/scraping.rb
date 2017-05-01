@@ -9,11 +9,11 @@ class Recipe < ActiveRecord::Base
 
     class_methods do
       def import
-        p "\nimporting names"
+        puts "\nimporting names"
         import_names
-        p "\nimporting recipe_kind_id"
+        puts "\nimporting recipe_kind_id"
         import_recipe_kind_id
-        p "\nimporting thumbnail_image_url"
+        puts "\nimporting thumbnail_image_url"
         import_thumbnail_image_url
       end
 

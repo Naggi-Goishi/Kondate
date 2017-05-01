@@ -7,11 +7,16 @@ namespace :scrape do
     Recipe.import
   end
 
+  task :recipe_kind do
+    RecipeKind.import
+  end
+
   task :ingredient do
     Ingredient.import
   end
 
   task :all do
+    RecipeKind.import
     Recipe.import
     Ingredient.import
   end
@@ -27,6 +32,12 @@ namespace :scrape do
 
     task :thumbnail_image_url do
       Recipe.import_thumbnail_image_url
+    end
+  end
+
+  namespace :ingredient do
+    task :hiragana do
+      Ingredient.import_hiragana
     end
   end
 end

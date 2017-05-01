@@ -1,4 +1,5 @@
 class ReplyContent
+  NO_RECIPE = 'すみません！該当するレシピがありませんでした。'
 
   def initialize(source)
     @source = source
@@ -6,24 +7,22 @@ class ReplyContent
 
   def ingredients
     Reply.source_is_ingredients = false
-    if @source.ingredients.contents.first
-      ingredients = @source.ingredients.contents
+    recipes = []
+
+    if @source.ingredients_blank?
+      ingredients = @source.ingredients
       recipes = Recipe.where_ingredients(ingredients)[0..4]
       columns = recipes_to_columns(recipes)
     end
-    if @source.ingredients.contents.first.nil? || recipes.blank?
-      return Message.new('すみません！該当するレシピがありませんでした。').build 
-    end
-    Carousel.new(columns).build
+    
+    no_recipe?(recipes) ? Message.new(NO_RECIPE).build : Carousel.new(columns).build
   end
 
   def recipe
     Reply.source_is_recipe = false
-    p @source.recipes
-    return Message.new('すみません！該当するレシピがありませんでした。').build if @source.recipes.blank?
     columns = recipes_to_columns(@source.recipes)
 
-    Carousel.new(columns).build
+    columns.blank? ? Message.new(NO_RECIPE).build : Carousel.new(columns).build
   end
 
   def recipe_kind
@@ -73,5 +72,9 @@ private
 
   def menu_button
     Button.new(Reply::MENU_BUTTON[:title], Reply::MENU_BUTTON[:text], Reply::MENU_BUTTON[:actions])
+  end
+
+  def no_recipe?(recipes)
+    @source.ingredients_blank? || recipes.blank?
   end
 end
