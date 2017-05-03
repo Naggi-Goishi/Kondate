@@ -1,0 +1,32 @@
+div.container
+  table
+    tr
+      - @column_names.each do |column_name|
+        th = column_name
+      - @table.each do |record|
+        tr
+          - @column_names.each do |column_name|
+            td
+              input type='text' value=eval("record.#{column_name}")
+
+javascript: 
+  function submit(url) {
+    const http = new XMLHttpRequest();
+    let params = {}
+
+    document.querySelectorAll('input').forEach(function(input) {
+      if (!(input.value.length === 0)) {
+        params[input.id] = input.value
+      }
+    })
+
+    http.open("POST", url, true);
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    http.onreadystatechange = function(result) {
+      if (http.readyState == 4 && http.status == 200) {
+        document.body.innerHTML = result.currentTarget.response;
+      }
+    };
+
+    http.send(JSON.stringify(params));
+  }
