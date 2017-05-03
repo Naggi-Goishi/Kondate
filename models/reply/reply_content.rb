@@ -10,6 +10,7 @@ class ReplyContent
     recipes = []
 
     if !@source.ingredients.blank?
+      p @source.ingredients
       recipes = Recipe.has_ingredients(@source.ingredients)[0..4]
       columns = recipes_to_columns(recipes)
     end
