@@ -16,10 +16,6 @@ class Ingredients < ActiveRecord::Relation
     @records.blank?
   end
 
-  def uncommon
-    @records.order(recipes_count: :asc)
-  end
-
   def show
     return false if blank?
     @records.inject('') do |text, ingredient|
