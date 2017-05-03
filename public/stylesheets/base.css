@@ -17,3 +17,27 @@ button {
   width: 60px;
   height: 20px;
 }
+
+div.save {
+  width: 200px;
+  height: 50px;
+  position: fixed;
+  right: 20px;
+  bottom: 10px;
+}
+
+div.save button {
+  width: 200px;
+  height: 50px;
+  color: #6495ED;
+  background-color: #fff;
+  border: 1px solid #6495ED;
+}
+
+div.save button:hover {
+  width: 200px;
+  height: 50px;
+  color: #fff;
+  background-color: #6495ED;
+  border: 1px solid #6495ED;
+}

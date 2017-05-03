@@ -3,14 +3,13 @@ div.container
     tr
       th 名前
       th ひらがな
-      th ボタン
     - @ingredients.each do |ingredient|
       tr
         td = ingredient.name
         td
           input type='text' id=ingredient.id
-        td
-          button onclick="submit()" 保存
+div.save
+  button onclick="submit()" 保存
 
 javascript: 
   function submit() {
