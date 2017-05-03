@@ -19,9 +19,8 @@ class String
     end
   end
 
-private
   def hiragana?
-    match(/^[ぁ-んー]+$/)
+    match(/^[ぁ-んー・ゔ]+$/)
   end
 
   def include_katakana?

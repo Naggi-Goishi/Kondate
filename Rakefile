@@ -41,3 +41,11 @@ namespace :scrape do
     end
   end
 end
+
+task :validate_hiragana do
+  Ingredient.all.each do |ingredient|
+    next if !!ingredient.hiragana.try(:hiragana?)
+    ingredient.hiragana = nil
+    ingredient.save
+  end
+end
