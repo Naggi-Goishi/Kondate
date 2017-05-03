@@ -61,11 +61,11 @@ class Reply
 
 private
   def get_content
-    if @@source_is_ingredients
+    if @source.ingredients?
       ReplyContent.new(@source).ingredients
-    elsif @@source_is_recipe
+    elsif @source.recipe?
       ReplyContent.new(@source).recipe
-    elsif @@source_is_recipe_kind
+    elsif @source.recipe_kind?
       ReplyContent.new(@source).recipe_kind
     else
       case @event

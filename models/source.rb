@@ -1,5 +1,5 @@
 class Source
-  @@kinds = { asking_recipe: '献立', ingredients: '材料'}
+  @@kinds = { recipe: '献立', ingredients: '材料'}
   @@recipe_kinds = {
     japanese: '和食',
     western: '洋食',
@@ -18,19 +18,12 @@ class Source
     is_recipe_kind: false
   }
 
-  attr_accessor :ingredients, :kind, :kind_en, :recipe_kind, :recipes, :klass, :text
+  attr_accessor :ingredients, :recipe_kind, :recipes, :text
 
   def initialize(text, flags=DEFAULT_FLAGS)
     @text = text
-    @recipe_kind = get_recipe_kind
-    if flags[:is_ingredients]
-      @ingredients = get_ingredients
-      @kind = @@kinds[:ingredients]
-    elsif flags[:is_recipe]
-      @recipes = Recipe.where(name: @text).limit(4)
-    end
-    @kind = get_kind
-    @kind_en = get_en(@@kinds, @kind)
+    @flags = flags
+    evaluate
   end
 
   def self.kinds
@@ -41,32 +34,33 @@ class Source
     @@recipe_kinds
   end
 
-  def ingredients_blank?
-    @ingredients.blank?
+  def ingredients?
+    @flags[:is_recipe]
+  end
+
+  def recipe?
+    @flags[:is_recipe]
+  end
+
+  def recipe_kind?
+    @flags[:is_recipe_kind]
   end
 
 private
-  def get_kind
-    if @recipe_kind
-      return @@kinds[:asking_recipe]
-    else
-      @@kinds.each do |_, kind|
-        return kind if text_contains(kind)
-      end
+  def evaluate
+    case
+    when @flags[:is_recipe]
+      @recipes = Recipe.contains(name: @text)
+    when @flags[:is_ingredients]
+      @ingredients = get_ingredients
+    when @flags[:is_recipe_kind]
+      @recipe_kind = get_recipe_kind
     end
-    false
   end
 
   def get_recipe_kind
     @@recipe_kinds.each do |_, recipe_kind|
       return RecipeKind.find_by(name: recipe_kind) if text_contains(recipe_kind)
-    end
-    false
-  end
-
-  def get_en(kinds, kind)
-    kinds.each do |en, ja|
-      return en if kind == ja 
     end
     false
   end
@@ -79,7 +73,7 @@ private
     else
       [@text]
     end
-    (ingredients.map! { |ingredient| Ingredient.where(hiragana: ingredient.to_hiragana) }).flatten!
+    (ingredients.map! { |ingredient| Ingredient.contains(hiragana: ingredient.to_hiragana) }).flatten!
     Ingredients.new(ingredients)
   end
 

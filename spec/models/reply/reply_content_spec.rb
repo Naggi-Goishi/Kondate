@@ -91,14 +91,6 @@ describe ReplyContent do
 
         expect(result).to eq Fixtures.button
       end
-
-      it 'Sourceがrecipe_kindを含む時、適当なCarouselを返す' do
-        carousel = Fixtures.carousel(recipe)
-        source = Source.new('和食でなにかおいしいものある？')
-        result = ReplyContent.new(source).message
-
-        expect(result).to include carousel
-      end
     end
   end
 end

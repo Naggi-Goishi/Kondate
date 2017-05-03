@@ -31,6 +31,8 @@ class Ingredients < ActiveRecord::Relation
   end
 
   def include?(ingredient)
-    @records.any? { |record| record == ingredient || record.eq_name?(ingredient) || record.eq_hiragana?(ingredient) }
+    @records.any? do |record|
+      record == ingredient || record.contains?(name: ingredient) || record.contains?(hiragana: ingredient)
+    end
   end
 end

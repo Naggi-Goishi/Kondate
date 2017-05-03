@@ -3,7 +3,6 @@ require_relative './scraping'
 class Recipe < ActiveRecord::Base
   include Scraping
 
-  scope :main,   -> { joins(:recipe_kind).where.not(recipe_kinds: { name: "デザート" }) }
   scope :has_ingredient_hiragana, -> (hiragana) { joins(:ingredients).where(ingredients: { hiragana: hiragana }) }
   scope :has_recipe_kinds_name, -> (recipe_kinds) { joins(:recipe_kind).where(recipe_kinds: { name: recipe_kinds }) }
   scope :has_ingredient, -> (ingredient) { has_ingredient_hiragana(ingredient.hiragana) }
@@ -26,9 +25,4 @@ class Recipe < ActiveRecord::Base
   def ingredients
     Ingredients.new(association(:ingredients).reader)
   end
-
-  def build
-    name + "\n( " + url + " ) "
-  end
-
 end

@@ -9,11 +9,10 @@ class ReplyContent
     Reply.source_is_ingredients = false
     recipes = []
 
-    if !@source.ingredients_blank?
+    if !@source.ingredients.blank?
       recipes = Recipe.has_ingredients(@source.ingredients)[0..4]
       columns = recipes_to_columns(recipes)
     end
-    
     no_recipe?(recipes) ? Message.new(NO_RECIPE).build : Carousel.new(columns).build
   end
 
@@ -26,7 +25,8 @@ class ReplyContent
 
   def recipe_kind
     Reply.source_is_recipe_kind = false
-    return Message.new(NO_RECIPE).build if !@source.recipe_kind
+    return Message.new(NO_RECIPE).build unless @source.recipe_kind
+
     recipes = Recipe.has_recipe_kinds_name(@source.recipe_kind.name).limit(5)
     columns = recipes_to_columns(recipes)
 
@@ -48,13 +48,7 @@ class ReplyContent
   end
 
   def message
-    case @source.kind
-    when Source.kinds[:asking_recipe]
-      recipes = Recipe.has_recipe_kinds_name(@source.recipe_kind.try(:name)).limit(5)
-      columns = recipes_to_columns(recipes)
-
-      @source.recipe_kind ? Carousel.new(columns).build : menu_button.build
-    end
+    menu_button.build
   end
 
 private
@@ -74,6 +68,6 @@ private
   end
 
   def no_recipe?(recipes)
-    @source.ingredients_blank? || recipes.blank?
+    @source.ingredients.blank? || recipes.blank?
   end
 end

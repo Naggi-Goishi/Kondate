@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170428235252) do
+ActiveRecord::Schema.define(version: 20170501210126) do
 
   create_table "ingredients", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -34,6 +34,10 @@ ActiveRecord::Schema.define(version: 20170428235252) do
     t.string "thumbnail_image_url"
     t.bigint "recipe_kind_id"
     t.index ["recipe_kind_id"], name: "index_recipes_on_recipe_kind_id"
+  end
+
+  create_table "source_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "title"
   end
 
 end
