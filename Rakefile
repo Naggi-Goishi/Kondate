@@ -42,10 +42,9 @@ namespace :scrape do
   end
 end
 
-task :validate_hiragana do
+task :import_recipes_count do
   Ingredient.all.each do |ingredient|
-    next if !!ingredient.hiragana.try(:hiragana?)
-    ingredient.hiragana = nil
+    ingredient.recipes_count = Recipe.has_ingredient(ingredient).count
     ingredient.save
   end
 end
