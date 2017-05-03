@@ -9,7 +9,7 @@ class Recipe < ActiveRecord::Base
   scope :has_recipe_kinds_name, -> (recipe_kinds) { joins(:recipe_kind).where(recipe_kinds: { name: recipe_kinds }) }
   scope :has_ingredient, -> (ingredient) { has_ingredient_hiragana(ingredient.hiragana) }
   scope :has_ingredients, -> (ingredients) {
-    has_ingredient(ingredients[0]).select(&[:has_all_ingredients?, ingredients[1..-1]])
+    has_ingredient(ingredients.uncommon[0]).select(&[:has_all_ingredients?, ingredients[1..-1]])
   }
 
   belongs_to :recipe_kind
