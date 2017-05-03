@@ -35,7 +35,7 @@ class Source
   end
 
   def ingredients?
-    @flags[:is_recipe]
+    @flags[:is_ingredients]
   end
 
   def recipe?
