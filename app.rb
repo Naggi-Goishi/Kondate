@@ -6,7 +6,6 @@ require 'slim'
 require 'json'
 require_relative './app_helper'
 require_relative './meta/base'
-require_relative './collections/ingredients'
 require_relative './models/base'
 
 class KondateChan < Sinatra::Base

@@ -73,8 +73,12 @@ private
     else
       [@text]
     end
-    (ingredients.map! { |ingredient| Ingredient.find_by(hiragana: ingredient.to_hiragana) }).flatten!
-    Ingredients.new(ingredients)
+
+    ids = ingredients.map do |ingredient| 
+      Ingredient.find_by(hiragana: ingredient.to_hiragana).try(:id)
+    end.flatten
+
+    Ingredient.where(id: ids)
   end
 
   def text_contains(string)
