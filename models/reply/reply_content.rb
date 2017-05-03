@@ -9,14 +9,10 @@ class ReplyContent
     Reply.source_is_ingredients = false
     recipes = []
 
-    p @source.ingredients
     if !@source.ingredients.blank?
       recipes = Recipe.has_ingredients(@source.ingredients)[0..4]
-      p @source.ingredients
       columns = recipes_to_columns(recipes)
     end
-    p recipes
-    p no_recipe?(recipes)
     no_recipe?(recipes) ? Message.new(NO_RECIPE).build : Carousel.new(columns).build
   end
 

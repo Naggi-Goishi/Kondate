@@ -73,7 +73,7 @@ private
     else
       [@text]
     end
-    (ingredients.map! { |ingredient| Ingredient.contains(hiragana: ingredient.to_hiragana) }).flatten!
+    (ingredients.map! { |ingredient| Ingredient.find_by(hiragana: ingredient.to_hiragana) }).flatten!
     Ingredients.new(ingredients)
   end
 
