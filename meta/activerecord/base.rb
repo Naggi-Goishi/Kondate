@@ -5,7 +5,9 @@ module ActiveRecord
     end
 
     def contains?(hash)
-      Regexp.new(hash.keys.first.to_s) === eval("ingredient.#{hash.values.first}")
+      column = hash.keys.first.to_s
+      keyword = hash.values.first.to_s
+      Regexp.new(keyword) === eval(column)
     end
   end
 end
