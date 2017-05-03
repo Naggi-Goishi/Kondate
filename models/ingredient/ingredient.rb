@@ -1,4 +1,3 @@
-require 'pry'
 require_relative './scraping'
 
 class Ingredient < ActiveRecord::Base
