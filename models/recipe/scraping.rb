@@ -48,7 +48,8 @@ class Recipe < ActiveRecord::Base
               recipe.save
               print '#'
             end
-            url = BASE_URL + page.search('.next a').first[:href] if  BASE_URL + page.search('.next a').first
+            next_ele = page.search('.next a').first
+            url = next_ele ? BASE_URL + next_ele[:href] : false;
           end
         end
       end
