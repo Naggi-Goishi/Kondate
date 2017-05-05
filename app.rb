@@ -27,9 +27,17 @@ class KondateChan < Sinatra::Base
     end
   end
 
+  def self.tables
+    begin
+      ActiveRecord::Base.connection.tables
+    rescue ActiveRecord::NoDatabaseError
+      []
+    end
+  end
+
   set :database_file, "./config/database.yml"
 
-  ActiveRecord::Base.connection.tables.each do |table_name|
+  tables.each do |table_name|
     get "/admin/tables/#{table_name}" do
       protect!
       Model = table_name.classify.constantize

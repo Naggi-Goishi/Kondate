@@ -11,8 +11,9 @@ class Recipe < ActiveRecord::Base
       def import
         puts "\nimporting names"
         import_base_names
+        import_recipes_by_recipe_kind
         puts "\nimporting recipe_kind_id"
-        import_recipe_kind_id
+        import_base_recipe_kind_id
         puts "\nimporting thumbnail_image_url"
         import_thumbnail_image_url
       end
@@ -38,11 +39,11 @@ class Recipe < ActiveRecord::Base
             recipes = page.search('.autoheight3 li')
             recipes.each do |recipe_ele|
               name = recipe_ele.search('.name').children[0].inner_text.strip
-              url  = BASE_URL + recipe_ele.search('a').first[:href]
+              url  = BASE_URL + recipe_ele.search('a').first[:href][0..url.length-2]
               time = recipe_ele.search('.time').inner_text.strip.gsub('分', '').to_i
               recipe = Recipe.where(url: url).first_or_initialize
               recipe.name = name
-              recipe.url  = url[0..url.length-2]
+              recipe.url  = url
               recipe.time = time
               recipe.recipe_kind_id = id
               recipe.save
@@ -54,7 +55,7 @@ class Recipe < ActiveRecord::Base
         end
       end
 
-      def import_recipe_kind_id
+      def import_base_recipe_kind_id
         kinds = BASE_PAGE.search('.autoheight4')
         RecipeKind.all.each.with_index do |kind, index|
           kinds[index].search('li a').each do |url|

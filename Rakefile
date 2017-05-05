@@ -23,6 +23,7 @@ namespace :scrape do
     RecipeKind.import
     Recipe.import
     Ingredient.import
+    RecipeStep.import
   end
 
   namespace :recipes do
