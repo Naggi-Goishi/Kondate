@@ -39,7 +39,8 @@ class Recipe < ActiveRecord::Base
             recipes = page.search('.autoheight3 li')
             recipes.each do |recipe_ele|
               name = recipe_ele.search('.name').children[0].inner_text.strip
-              url  = BASE_URL + recipe_ele.search('a').first[:href][0..url.length-2]
+              url  = BASE_URL + recipe_ele.search('a').first[:href]
+              url  = url[0..url.length-2]
               time = recipe_ele.search('.time').inner_text.strip.gsub('分', '').to_i
               recipe = Recipe.where(url: url).first_or_initialize
               recipe.name = name
