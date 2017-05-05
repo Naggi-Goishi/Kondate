@@ -31,8 +31,8 @@ class Recipe < ActiveRecord::Base
       end
 
       def import_recipes_by_recipe_kind
-        RecipeKind.all.pluck(:id).each do |id|
-          url = BASE_URL + '/search/g0' + id.to_s
+        RecipeKind.all.pluck(:id).each.with_index do |id, index|
+          url = BASE_URL + '/search/g0' + (index + 1)
           while url
             page = AGENT.get(url)
             recipes = page.search('.autoheight3 li')
