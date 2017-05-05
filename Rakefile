@@ -11,6 +11,10 @@ namespace :scrape do
     RecipeKind.import
   end
 
+  task :recipe_steps do
+    RecipeStep.import
+  end
+
   task :ingredients do
     Ingredient.import
   end
@@ -32,6 +36,10 @@ namespace :scrape do
 
     task :thumbnail_image_url do
       Recipe.import_thumbnail_image_url
+    end
+
+    task :time do
+      Recipe.import_time
     end
   end
 

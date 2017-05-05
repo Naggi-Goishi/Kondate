@@ -2,7 +2,6 @@ require_relative './scraping'
 
 class Recipe < ActiveRecord::Base
   include Scraping
-
   after_create :count_recipe
 
   default_scope { order('RAND()') }
@@ -17,6 +16,7 @@ class Recipe < ActiveRecord::Base
   belongs_to :recipe_kind
   has_many :ingredients_recipes
   has_many :ingredients, through: :ingredients_recipes
+  has_many :steps, class_name: 'RecipeStep'
 
   def has_ingredient?(ingredient)
     ingredients.include?(ingredient)

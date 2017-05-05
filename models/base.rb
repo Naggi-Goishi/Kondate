@@ -4,4 +4,5 @@ require_relative './ingredients_recipes'
 require_relative './ingredient/ingredient'
 require_relative './recipe/recipe'
 require_relative './recipe_kind/recipe_kind'
+require_relative './recipe_step/recipe_step'
 

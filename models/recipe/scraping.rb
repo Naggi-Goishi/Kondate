@@ -52,6 +52,16 @@ class Recipe < ActiveRecord::Base
         end
       end
 
+      def import_time
+        Recipe.all.each do |recipe|
+          page = AGENT.get(recipe.url)
+          text = page.search('.table_recipes caption').inner_text
+          recipe.time = text.match(/約(.+)分/)[1]
+          recipe.save
+          print '#'
+        end
+      end
+
       private
         def get_name_from_names(names, i)
           names[i-1].children[0].inner_text.strip
