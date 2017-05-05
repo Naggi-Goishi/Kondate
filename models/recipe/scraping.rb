@@ -5,21 +5,21 @@ class Recipe < ActiveRecord::Base
     extend ActiveSupport::Concern
     BASE_URL = 'https://chefgohan.gnavi.co.jp'
     AGENT = Mechanize.new
-    PAGE = AGENT.get(BASE_URL + '/base100')
+    BASE_PAGE = AGENT.get(BASE_URL + '/base100')
 
     class_methods do
       def import
         puts "\nimporting names"
-        import_names
+        import_base_names
         puts "\nimporting recipe_kind_id"
         import_recipe_kind_id
         puts "\nimporting thumbnail_image_url"
         import_thumbnail_image_url
       end
 
-      def import_names
-        names = PAGE.search('.autoheight4 li .name')
-        urls = PAGE.search('.autoheight4 li a')
+      def import_base_names
+        names = BASE_PAGE.search('.autoheight4 li .name')
+        urls = BASE_PAGE.search('.autoheight4 li a')
         num_recipes = names.length
 
         for i in 1..num_recipes
@@ -30,8 +30,31 @@ class Recipe < ActiveRecord::Base
         end
       end
 
+      def import_recipes_by_recipe_kind
+        RecipeKind.all.pluck(:id).each do |id|
+          url = BASE_URL + '/search/g0' + id.to_s
+          while url
+            page = AGENT.get(url)
+            recipes = page.search('.autoheight3 li')
+            recipes.each do |recipe_ele|
+              name = recipe_ele.search('.name').children[0].inner_text.strip
+              url  = BASE_URL + recipe_ele.search('a').first[:href]
+              time = recipe_ele.search('.time').inner_text.strip.gsub('分', '').to_i
+              recipe = Recipe.where(url: url).first_or_initialize
+              recipe.name = name
+              recipe.url  = url
+              recipe.time = time
+              recipe.recipe_kind_id = id
+              recipe.save
+              print '#'
+            end
+            url = BASE_URL + page.search('.next a').first[:href] if  BASE_URL + page.search('.next a').first
+          end
+        end
+      end
+
       def import_recipe_kind_id
-        kinds = PAGE.search('.autoheight4')
+        kinds = BASE_PAGE.search('.autoheight4')
         RecipeKind.all.each.with_index do |kind, index|
           kinds[index].search('li a').each do |url|
             recipe = Recipe.where(url: BASE_URL + url[:href]).first_or_initialize

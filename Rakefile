@@ -41,6 +41,10 @@ namespace :scrape do
     task :time do
       Recipe.import_time
     end
+
+    task :by_recipe_kind do
+      Recipe.import_recipes_by_recipe_kind
+    end
   end
 
   namespace :ingredients do
