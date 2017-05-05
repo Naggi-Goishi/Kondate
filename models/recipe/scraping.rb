@@ -32,7 +32,7 @@ class Recipe < ActiveRecord::Base
 
       def import_recipes_by_recipe_kind
         RecipeKind.all.pluck(:id).each.with_index do |id, index|
-          url = BASE_URL + '/search/g0' + (index + 1)
+          url = BASE_URL + '/search/g0' + (index + 1).to_s
           while url
             page = AGENT.get(url)
             recipes = page.search('.autoheight3 li')
@@ -42,7 +42,7 @@ class Recipe < ActiveRecord::Base
               time = recipe_ele.search('.time').inner_text.strip.gsub('分', '').to_i
               recipe = Recipe.where(url: url).first_or_initialize
               recipe.name = name
-              recipe.url  = url
+              recipe.url  = url[0..url.length-2]
               recipe.time = time
               recipe.recipe_kind_id = id
               recipe.save
