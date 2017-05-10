@@ -24,7 +24,7 @@ class Ingredient < ActiveRecord::Base
   end
 
   def self.show
-    return false if blank?
+    return false if all.blank?
     all.inject('') do |text, ingredient|
       return text + '...' if text.length > 30
       text + ingredient.name + '、'
