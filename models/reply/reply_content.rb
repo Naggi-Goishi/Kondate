@@ -18,7 +18,9 @@ class ReplyContent
 
   def recipe
     Reply.source_is_recipe = false
+    p @source.recipes
     columns = recipes_to_columns(@source.recipes.limit(5))
+    p columns
 
     columns.blank? ? Message.new(NO_RECIPE).build : Carousel.new(columns).build
   end
@@ -44,7 +46,7 @@ class ReplyContent
     when 'recipe_kind'
       Reply.source_is_recipe_kind = true
       Message.new(Reply::REPLYS[:recipe_kind]).build
-    end    
+    end
   end
 
   def message
