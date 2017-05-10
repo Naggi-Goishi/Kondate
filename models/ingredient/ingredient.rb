@@ -20,7 +20,7 @@ class Ingredient < ActiveRecord::Base
   end
 
   def self.hiraganas
-    all.group_by(&:hiragana).keys
+    all.pluck(:hiragana)
   end
 
   def self.show

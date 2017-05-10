@@ -18,6 +18,7 @@ class ReplyContent
 
   def recipe
     Reply.source_is_recipe = false
+    p @source.recipes
     columns = recipes_to_columns(@source.recipes)
 
     columns.blank? ? Message.new(NO_RECIPE).build : Carousel.new(columns).build
