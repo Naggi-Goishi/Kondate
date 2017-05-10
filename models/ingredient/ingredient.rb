@@ -26,7 +26,7 @@ class Ingredient < ActiveRecord::Base
 
   def counts_recipe
     self.recipes_count = 1 + recipes_count.to_i
-    self.save
+    save
   end
 
 end
