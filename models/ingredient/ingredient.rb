@@ -24,8 +24,8 @@ class Ingredient < ActiveRecord::Base
     end
   end
 
-  def count_recipe
-    recipes_count = 1 + recipes_count.to_i
+  def counts_recipe
+    self.recipes_count = 1 + recipes_count.to_i
     self.save
   end
 
