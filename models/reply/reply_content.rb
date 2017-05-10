@@ -18,8 +18,7 @@ class ReplyContent
 
   def recipe
     Reply.source_is_recipe = false
-    p @source.recipes
-    columns = recipes_to_columns(@source.recipes)
+    columns = recipes_to_columns(@source.recipes.limit(5))
 
     columns.blank? ? Message.new(NO_RECIPE).build : Carousel.new(columns).build
   end
@@ -54,6 +53,10 @@ class ReplyContent
 
 private
   def recipes_to_columns(recipes)
+    if recipes.length > 5
+      puts "Warning: in recipes_to_columns recipes's length should be 5 but " + recipes.length
+      recipes = recipes.take(5)
+    end
     recipes.map do |recipe|
       Column.new(
         recipe.thumbnail_image_url,
