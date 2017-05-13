@@ -48,7 +48,7 @@ class Source
   end
 
   def recipe?
-    @flags[:is_recipe]
+    @flags[:is_recipe] || text_matches_to_recipes_name_wordings?
   end
 
   def recipe_kind?
@@ -63,7 +63,7 @@ private
   def evaluate
     case
     when recipe?
-      @recipes = Recipe.contains(name: @text)
+      @recipes = get_recipes
     when ingredients?
       @ingredients = get_ingredients
     when recipe_kind?
@@ -71,6 +71,10 @@ private
     when next_recipes?
       @recipes = @@next_recipes
     end
+  end
+
+  def get_recipes
+    Recipe.contains(name: @text.gsub(/が食べたい*+\z/, ''))
   end
 
   def get_recipe_kind
@@ -102,6 +106,10 @@ private
 
   def text_matches_to_ingredients_wordings?
     @text.match? (/(を使った|を使用した|を使用する|を使う)*+(ゴハン|料理|レシピ|ごはん|ご飯)/)
+  end
+
+  def text_matches_to_recipes_name_wordings?
+    @text.match? (/が食べたい/)
   end
 
   def text_contains(string)
