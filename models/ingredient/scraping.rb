@@ -31,7 +31,7 @@ class Ingredient < ActiveRecord::Base
       end
 
       def import_hiragana
-        Ingredient.all.each do |ingredient|
+        Ingredient.where(hiragana: nil).order('RAND()').each do |ingredient|
           ingredient.hiragana = ingredient.name.to_hiragana
           ingredient.save
           print '#'
@@ -40,7 +40,7 @@ class Ingredient < ActiveRecord::Base
 
     private
       def clean(string)
-        string = string.gsub(/（.+）|\(.+\)|\(.+）|（.+\)|\(.+\z|.+\.|（.+$|^[ABCDEFG]|[ABCDEFG]\z|\d{1}.+\z|[[:space:]]|├|└|■|┌|※|下記３種のソースを混ぜる|お好みの/, '')
+        string = string.gsub(/（.+）|\(.+\)|\(.+）|（.+\)|\(.+\z|.+\.|（.+$|^[ABCDEFG]|[ABCDEFG]\z|\d{1}.+\z|[[:space:]]|├|└|■|┌|※|下記３種のソースを混ぜる|お好みの|EXV|◆|,/, '')
         string = string.gsub(/.\(.+\z/, '') + string.match(/.\(.+\z/)[0][0] if string.match(/.\(.+\z/)
         string
       end

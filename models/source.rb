@@ -52,7 +52,7 @@ class Source
   end
 
   def recipe_kind?
-    @flags[:is_recipe_kind]
+    @flags[:is_recipe_kind] || text_matches_to_recipes_kind_wordings?
   end
 
   def next_recipes?
@@ -98,7 +98,11 @@ private
     ingredients.map! { |ingredient| ingredient.gsub(/(を使った|を使用した|を使用する|を使う).+\z/, '') }
 
     ids = ingredients.map do |ingredient|
-      Ingredient.find_by(hiragana: ingredient.to_hiragana).try(:id)
+      if ingredient.to_hiragana
+        Ingredient.find_by(hiragana: ingredient.to_hiragana).try(:id)
+      else
+        Ingredient.find_by(name: ingredient).try(:id)
+      end
     end.flatten
 
     Ingredient.where(id: ids)
@@ -110,6 +114,10 @@ private
 
   def text_matches_to_recipes_name_wordings?
     @text.match? (/が食べたい/)
+  end
+
+  def text_matches_to_recipes_kind_wordings?
+    @@recipe_kinds.any? { |_, recipe_kind| recipe_kind == @text.match(/(.+)が食べたい/)[1] }
   end
 
   def text_contains(string)
