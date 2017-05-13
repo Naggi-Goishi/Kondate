@@ -56,14 +56,15 @@ class Source
   end
 
   def next_recipes?
-    @@next_recipes.present? && (@text.match? (/他|次|/))
+    @@next_recipes.present? && (@text.match? (/他|次/))
   end
 
 private
   def evaluate
     p next_recipes?
+    p Source.next_recipes.take(1)
     p @@next_recipes.present?
-    p (@text.match? (/他|次|/))
+    p (@text.match? (/他|次/))
     case
     when recipe?
       @recipes = Recipe.contains(name: @text)

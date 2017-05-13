@@ -12,6 +12,7 @@ class ReplyContent
       all_recipes = Recipe.has_ingredients(@source.ingredients)
       recipes = all_recipes.take(5)
       Source.next_recipes = all_recipes - recipes
+      p Source.next_recipes.take(1)
 
       columns = recipes_to_columns(recipes)
     end
