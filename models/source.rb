@@ -70,6 +70,8 @@ private
       @text.split(/、/)
     elsif @text.match(/\n/)
       @text.split(/\n/)
+    elsif @text.match(/と/)
+      @text.split(/と/)
     else
       [@text]
     end
@@ -88,6 +90,6 @@ private
   end
 
   def text_contains(string)
-    Regexp.new(string).match(@text)
+    Regexp.new(string).match? (@text)
   end
 end

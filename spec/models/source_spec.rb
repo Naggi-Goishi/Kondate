@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 
 describe 'Source' do
-  let (:ingredient) { create(:ingredient) }
+  let (:ingredient)  { create(:ingredient) }
   let (:recipe_kind) { create(:recipe_kind) }
   let (:recipe) { create(:recipe, ingredients: [ingredient], recipe_kind: recipe_kind) }
 
