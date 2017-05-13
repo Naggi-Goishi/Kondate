@@ -8,11 +8,13 @@ class ReplyContent
     Reply.source_is_ingredients = false
     recipes = []
 
-    if !@source.ingredients.blank?
-      recipes = Recipe.has_ingredients(@source.ingredients)[0..4]
+    unless @source.ingredients.blank?
+      all_recipes = Recipe.has_ingredients(@source.ingredients)
+      recipes = all_recipes.take(5)
+      Source.next_recipes = all_recipes - recipes
       columns = recipes_to_columns(recipes)
     end
-    no_recipe?(recipes) ? Message.new(Reply::WORDINGS[:no_recipes]).build : Carousel.new(columns).build
+    recipes.blank? ? Message.new(Reply::WORDINGS[:no_recipes]).build : Carousel.new(columns).build
   end
 
   def recipe
@@ -30,6 +32,13 @@ class ReplyContent
     columns = recipes_to_columns(recipes)
 
     Carousel.new(columns).build
+  end
+
+  def next_recipes
+    recipes = @source.recipes.take(5)
+    Source.next_recipes -= recipes
+    columns = recipes_to_columns(recipes)
+    recipes.blank? ? Message.new(Reply::WORDINGS[:no_recipes]).build : Carousel.new(columns).build
   end
 
   def postback
@@ -68,9 +77,5 @@ private
 
   def menu_button
     Button.new(Reply::MENU_BUTTON[:title], Reply::MENU_BUTTON[:text], Reply::MENU_BUTTON[:actions])
-  end
-
-  def no_recipe?(recipes)
-    @source.ingredients.blank? || recipes.blank?
   end
 end

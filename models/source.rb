@@ -1,5 +1,5 @@
 class Source
-  @@kinds = { recipe: '献立', ingredients: '材料'}
+  @@kinds = { recipe: '献立', ingredients: '材料' }
   @@recipe_kinds = {
     japanese: '和食',
     western: '洋食',
@@ -16,7 +16,7 @@ class Source
     is_ingridients: false,
     is_recipe: false,
     is_recipe_kind: false
-  }
+  }.freeze
 
   attr_accessor :ingredients, :recipe_kind, :recipes, :text
 
@@ -34,6 +34,14 @@ class Source
     @@recipe_kinds
   end
 
+  def self.next_recipes
+    @@next_recipes
+  end
+
+  def self.next_recipes=(recipes_cache)
+    @@next_recipes = recipes_cache
+  end
+
   def ingredients?
     @flags[:is_ingredients] || text_matches_to_ingredients_wordings?
   end
@@ -46,6 +54,10 @@ class Source
     @flags[:is_recipe_kind]
   end
 
+  def next_recipes?
+    @@next_recipes.present? && (@text.match? (/他|次|/))
+  end
+
 private
   def evaluate
     case
@@ -55,6 +67,8 @@ private
       @ingredients = get_ingredients
     when recipe_kind?
       @recipe_kind = get_recipe_kind
+    when next_recipes?
+      @recipes = @@next_recipes
     end
   end
 
@@ -76,7 +90,7 @@ private
       [@text]
     end
 
-    ingredients.map! { |ingredient| ingredient.gsub(/を使った.+\z|を使用した.+\z/, '') }
+    ingredients.map! { |ingredient| ingredient.gsub(/を使った.+\z|を使用した.+\z|を使用する.+\z/, '') }
 
     ids = ingredients.map do |ingredient|
       Ingredient.find_by(hiragana: ingredient.to_hiragana).try(:id)
@@ -86,7 +100,7 @@ private
   end
 
   def text_matches_to_ingredients_wordings?
-    @text.match? (/を使った料理|を使ったレシピ|を使用した料理|を使用したレシピ/)
+    @text.match? (/を使った料理|を使ったレシピ|を使用した料理|を使用したレシピ|を使用する料理|を使用するレシピ/)
   end
 
   def text_contains(string)

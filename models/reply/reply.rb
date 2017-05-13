@@ -62,6 +62,8 @@ private
       ReplyContent.new(@source).recipe
     elsif @source.recipe_kind?
       ReplyContent.new(@source).recipe_kind
+    elsif @source.next_recipes?
+      ReplyContent.new(@source).next_recipes
     else
       case @event
       when Line::Bot::Event::Postback

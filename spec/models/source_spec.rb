@@ -19,7 +19,7 @@ describe 'Source' do
     end
 
     it 'has ingredient with correct wording list, accordingly' do
-      source = Source.new(ingredient.name + 'を使用したレシピ', is_ingredients: true)
+      source = Source.new(ingredient.name + 'を使用したレシピ')
       expect(source.ingredients).to include ingredient
     end
   end
