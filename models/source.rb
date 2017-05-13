@@ -61,10 +61,6 @@ class Source
 
 private
   def evaluate
-    p next_recipes?
-    p Source.next_recipes.take(1)
-    p @@next_recipes.present?
-    p (@text.match? (/他|次/))
     case
     when recipe?
       @recipes = Recipe.contains(name: @text)
@@ -95,7 +91,7 @@ private
       [@text]
     end
 
-    ingredients.map! { |ingredient| ingredient.gsub(/を使った.+\z|を使用した.+\z|を使用する.+\z|を使う.+\z/, '') }
+    ingredients.map! { |ingredient| ingredient.gsub(/(を使った|を使用した|を使用する|を使う).+\z/, '') }
 
     ids = ingredients.map do |ingredient|
       Ingredient.find_by(hiragana: ingredient.to_hiragana).try(:id)
