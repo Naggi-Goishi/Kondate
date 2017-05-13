@@ -9,10 +9,7 @@ class ReplyContent
     recipes = []
 
     unless @source.ingredients.blank?
-      all_recipes = Recipe.has_ingredients(@source.ingredients)
-      recipes = all_recipes.take(5)
-      Source.next_recipes = all_recipes - recipes
-
+      recipes = get_recipes_and_set_next_recipes(Recipe.has_ingredients(@source.ingredients))
       columns = recipes_to_columns(recipes)
     end
     recipes.blank? ? Message.new(Reply::WORDINGS[:no_recipes]).build : Carousel.new(columns).build
@@ -20,6 +17,7 @@ class ReplyContent
 
   def recipe
     Reply.source_is_recipe = false
+    recipes = get_recipes_and_set_next_recipes(@source.recipes)
     columns = recipes_to_columns(@source.recipes.limit(5))
 
     columns.blank? ? Message.new(Reply::WORDINGS[:no_recipes]).build : Carousel.new(columns).build
@@ -36,8 +34,7 @@ class ReplyContent
   end
 
   def next_recipes
-    recipes = @source.recipes.take(5)
-    Source.next_recipes -= recipes
+    recipes = get_recipes_and_set_next_recipes(@source.recipes.take(5))
     columns = recipes_to_columns(recipes)
     recipes.blank? ? Message.new(Reply::WORDINGS[:no_recipes]).build : Carousel.new(columns).build
   end
@@ -78,5 +75,11 @@ private
 
   def menu_button
     Button.new(Reply::MENU_BUTTON[:title], Reply::MENU_BUTTON[:text], Reply::MENU_BUTTON[:actions])
+  end
+
+  def get_recipes_and_set_next_recipes(all_recipes)
+    recipes = all_recipes.take(5)
+    Source.next_recipes = all_recipes - recipes
+    recipes
   end
 end

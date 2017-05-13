@@ -10,6 +10,11 @@ describe 'Source' do
       source = Source.new(recipe.name, is_recipe: true)
       expect(source.recipes).to include recipe
     end
+
+    it 'has recipes with correct wording list, accordingly' do
+      source = Source.new(recipe.name + 'が食べたい')
+      expect(source.recipes).to include recipe
+    end
   end
 
   context 'is ingredients' do
