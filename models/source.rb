@@ -11,6 +11,7 @@ class Source
     ethnic: 'エスニック',
     dessert: 'デザート'
   }
+  @@next_recipes = []
 
   DEFAULT_FLAGS = {
     is_ingridients: false,
@@ -55,12 +56,12 @@ class Source
   end
 
   def next_recipes?
-    puts @@next_recipes
     @@next_recipes.present? && (@text.match? (/他|次|/))
   end
 
 private
   def evaluate
+    p next_recipes?
     case
     when recipe?
       @recipes = Recipe.contains(name: @text)
