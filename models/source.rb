@@ -62,6 +62,8 @@ class Source
 private
   def evaluate
     p next_recipes?
+    p @@next_recipes.present?
+    p (@text.match? (/他|次|/))
     case
     when recipe?
       @recipes = Recipe.contains(name: @text)
