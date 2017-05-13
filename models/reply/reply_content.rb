@@ -1,5 +1,4 @@
 class ReplyContent
-  NO_RECIPE = 'すみません！該当するレシピがありませんでした。'
 
   def initialize(source)
     @source = source
@@ -13,19 +12,19 @@ class ReplyContent
       recipes = Recipe.has_ingredients(@source.ingredients)[0..4]
       columns = recipes_to_columns(recipes)
     end
-    no_recipe?(recipes) ? Message.new(NO_RECIPE).build : Carousel.new(columns).build
+    no_recipe?(recipes) ? Message.new(Reply::WORDINGS[:no_recipes]).build : Carousel.new(columns).build
   end
 
   def recipe
     Reply.source_is_recipe = false
     columns = recipes_to_columns(@source.recipes.limit(5))
 
-    columns.blank? ? Message.new(NO_RECIPE).build : Carousel.new(columns).build
+    columns.blank? ? Message.new(Reply::WORDINGS[:no_recipes]).build : Carousel.new(columns).build
   end
 
   def recipe_kind
     Reply.source_is_recipe_kind = false
-    return Message.new(NO_RECIPE).build unless @source.recipe_kind
+    return Message.new(Reply::WORDINGS[:no_recipes]).build unless @source.recipe_kind
 
     recipes = Recipe.has_recipe_kinds_name(@source.recipe_kind.name).limit(5)
     columns = recipes_to_columns(recipes)

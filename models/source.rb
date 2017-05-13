@@ -35,7 +35,7 @@ class Source
   end
 
   def ingredients?
-    @flags[:is_ingredients]
+    @flags[:is_ingredients] || text_matches_to_ingredients_wordings?
   end
 
   def recipe?
@@ -49,11 +49,11 @@ class Source
 private
   def evaluate
     case
-    when @flags[:is_recipe]
+    when recipe?
       @recipes = Recipe.contains(name: @text)
-    when @flags[:is_ingredients]
+    when ingredients?
       @ingredients = get_ingredients
-    when @flags[:is_recipe_kind]
+    when recipe_kind?
       @recipe_kind = get_recipe_kind
     end
   end
@@ -74,11 +74,17 @@ private
       [@text]
     end
 
-    ids = ingredients.map do |ingredient| 
+    ingredients.map! { |ingredient| ingredient.gsub(/を使った.+\z|を使用した.+\z/, '') }
+
+    ids = ingredients.map do |ingredient|
       Ingredient.find_by(hiragana: ingredient.to_hiragana).try(:id)
     end.flatten
 
     Ingredient.where(id: ids)
+  end
+
+  def text_matches_to_ingredients_wordings?
+    @text.match? (/を使った料理|を使ったレシピ|を使用した料理|を使用したレシピ/)
   end
 
   def text_contains(string)

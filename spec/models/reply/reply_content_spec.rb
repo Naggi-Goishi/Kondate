@@ -20,7 +20,7 @@ describe ReplyContent do
         source = Source.new('ほげ', is_ingredients: true)
         result = ReplyContent.new(source).ingredients
 
-        expect(result).to eq Message.new(ReplyContent::NO_RECIPE).build
+        expect(result).to eq Message.new(Reply::WORDINGS[:no_recipes]).build
       end
     end
 
@@ -38,7 +38,7 @@ describe ReplyContent do
         source = Source.new('ほげ', is_recipe: true)
         result = ReplyContent.new(source).ingredients
 
-        expect(result).to eq Message.new(ReplyContent::NO_RECIPE).build
+        expect(result).to eq Message.new(Reply::WORDINGS[:no_recipes]).build
       end
     end
 
@@ -56,7 +56,7 @@ describe ReplyContent do
         source = Source.new('ほげ', is_recipe_kind: true)
         result = ReplyContent.new(source).recipe_kind
 
-        expect(result).to eq Message.new(ReplyContent::NO_RECIPE).build
+        expect(result).to eq Message.new(Reply::WORDINGS[:no_recipes]).build
       end
     end
 

@@ -1,4 +1,5 @@
 sending_recipes: "本日の献立候補のリストを送りますね！\n\n"
+no_recipes: 'すみません！該当するレシピがありませんでした。'
 
 explanation:
   recipe: 'お調べになりたい料理名を教えてください！'
