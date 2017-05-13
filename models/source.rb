@@ -38,8 +38,8 @@ class Source
     @@next_recipes
   end
 
-  def self.next_recipes=(recipes_cache)
-    @@next_recipes = recipes_cache
+  def self.next_recipes=(next_recipes)
+    @@next_recipes = next_recipes
   end
 
   def ingredients?
@@ -55,6 +55,7 @@ class Source
   end
 
   def next_recipes?
+    puts @@next_recipes
     @@next_recipes.present? && (@text.match? (/他|次|/))
   end
 
@@ -90,7 +91,7 @@ private
       [@text]
     end
 
-    ingredients.map! { |ingredient| ingredient.gsub(/を使った.+\z|を使用した.+\z|を使用する.+\z/, '') }
+    ingredients.map! { |ingredient| ingredient.gsub(/を使った.+\z|を使用した.+\z|を使用する.+\z|を使う.+\z/, '') }
 
     ids = ingredients.map do |ingredient|
       Ingredient.find_by(hiragana: ingredient.to_hiragana).try(:id)
@@ -100,7 +101,7 @@ private
   end
 
   def text_matches_to_ingredients_wordings?
-    @text.match? (/を使った料理|を使ったレシピ|を使用した料理|を使用したレシピ|を使用する料理|を使用するレシピ/)
+    @text.match? (/(を使った|を使用した|を使用する|を使う)*+(ゴハン|料理|レシピ|ごはん|ご飯)/)
   end
 
   def text_contains(string)

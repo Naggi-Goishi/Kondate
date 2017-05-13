@@ -12,6 +12,7 @@ class ReplyContent
       all_recipes = Recipe.has_ingredients(@source.ingredients)
       recipes = all_recipes.take(5)
       Source.next_recipes = all_recipes - recipes
+      puts Source.next_recipes
       columns = recipes_to_columns(recipes)
     end
     recipes.blank? ? Message.new(Reply::WORDINGS[:no_recipes]).build : Carousel.new(columns).build
