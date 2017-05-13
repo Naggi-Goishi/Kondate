@@ -34,7 +34,7 @@ class ReplyContent
   end
 
   def next_recipes
-    recipes = get_recipes_and_set_next_recipes(@source.recipes.take(5))
+    recipes = get_recipes_and_set_next_recipes(@source.recipes)
     columns = recipes_to_columns(recipes)
     recipes.blank? ? Message.new(Reply::WORDINGS[:no_recipes]).build : Carousel.new(columns).build
   end
