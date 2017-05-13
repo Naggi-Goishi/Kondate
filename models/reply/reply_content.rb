@@ -37,13 +37,13 @@ class ReplyContent
     case @source.text
     when 'ingredient'
       Reply.source_is_ingredients = true
-      Message.new(Reply::REPLYS[:ingredients]).build
+      Message.new(Reply::WORDINGS[:explanation][:ingredients]).build
     when 'recipe'
       Reply.source_is_recipe = true
-      Message.new(Reply::REPLYS[:recipe]).build
+      Message.new(Reply::WORDINGS[:explanation][:recipe]).build
     when 'recipe_kind'
       Reply.source_is_recipe_kind = true
-      Message.new(Reply::REPLYS[:recipe_kind]).build
+      Message.new(Reply::WORDINGS[:explanation][:recipe_kind]).build
     end
   end
 

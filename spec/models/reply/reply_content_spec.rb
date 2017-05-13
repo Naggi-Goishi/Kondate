@@ -66,21 +66,21 @@ describe ReplyContent do
         source = Source.new('ingredient')
         result = ReplyContent.new(source).postback
 
-        expect(result).to eq Message.new(Reply::REPLYS[:ingredients]).build
+        expect(result).to eq Message.new(Reply::WORDINGS[:explanation][:ingredients]).build
       end
 
       it 'Sourceがrecipeな時、適当なcarouselを返す' do
         source = Source.new('recipe')
         result = ReplyContent.new(source).postback
 
-        expect(result).to eq Message.new(Reply::REPLYS[:recipe]).build
+        expect(result).to eq Message.new(Reply::WORDINGS[:explanation][:recipe]).build
       end
 
       it 'Sourceがrecipe_kindな時、適当なcarouselを返す' do
         source = Source.new('recipe_kind')
         result = ReplyContent.new(source).postback
 
-        expect(result).to eq Message.new(Reply::REPLYS[:recipe_kind]).build
+        expect(result).to eq Message.new(Reply::WORDINGS[:explanation][:recipe_kind]).build
       end
     end
 
