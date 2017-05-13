@@ -21,7 +21,7 @@ class Reply
 
   def initialize(client, events)
     @client = client
-    @event  = ActiveSupport::HashWithIndifferentAccess.new(events.first)
+    @event  = events.first
     @source = get_source
     @content = get_content
   end
@@ -75,9 +75,9 @@ private
   def get_source
     case @event
     when Line::Bot::Event::Postback
-      Source.new(@event[:postback][:data])
+      Source.new(@event['postback']['data'])
     when Line::Bot::Event::Message
-      Source.new(@event.message[:text], Reply.flags)
+      Source.new(@event.message['text'], Reply.flags)
     end
   end
 
