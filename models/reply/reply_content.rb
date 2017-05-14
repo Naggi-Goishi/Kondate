@@ -23,8 +23,7 @@ class ReplyContent
   end
 
   def next_recipes
-    recipes = get_columns_and_set_next_recipes(@source.recipes)
-    columns = recipes_to_columns(recipes)
+    set_columns(@source.recipes)
     recipes.blank? ? Message.new(Reply::WORDINGS[:no_recipes]).build : Carousel.new(columns).build
   end
 
@@ -66,6 +65,10 @@ private
     Button.new(Reply::MENU_BUTTON[:title], Reply::MENU_BUTTON[:text], Reply::MENU_BUTTON[:actions])
   end
 
+  def set_columns(all_recipes)
+    @columns = get_columns_and_set_next_recipes(all_recipes)
+  end
+
   def get_columns_and_set_next_recipes(all_recipes)
     return unless all_recipes
 
@@ -76,9 +79,5 @@ private
 
   def reply
     @columns.blank? ? Message.new(Reply::WORDINGS[:no_recipes]).build : Carousel.new(@columns).build
-  end
-
-  def set_columns(all_recipes)
-    @columns = get_columns_and_set_next_recipes(all_recipes)
   end
 end
