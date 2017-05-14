@@ -56,11 +56,11 @@ describe 'Recipe' do
 
   context 'instance methods' do
     it 'return true if it has the ingredient' do
-      recipe = create(:recipe, ingredients: [ingredient])
       expect(recipe.has_ingredient?(ingredient)).to be_truthy
     end
 
     it 'return false if it has not the ingredient' do
+      recipe = build(:recipe)
       expect(recipe.has_ingredient?(ingredient)).to be_falsy
     end
 
