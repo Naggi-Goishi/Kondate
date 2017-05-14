@@ -6,7 +6,7 @@ class ReplyContent
 
   def ingredients
     Reply.source_is_ingredients = false
-    set_columns(Recipe.has_ingredients(@source.ingredients))
+    set_columns(Recipe.has_ingredients(@source.ingredients)) if @source.ingredients
     reply
   end
 

@@ -7,7 +7,7 @@ class Recipe < ActiveRecord::Base
   default_scope { order('RAND()') }
 
   scope :has_ingredient_hiragana, -> (hiragana) { joins(:ingredients).where(ingredients: { hiragana: hiragana }) }
-  scope :has_ingredient, ->  (ingredient) { has_ingredient_hiragana(ingredient.hiragana) }
+  scope :has_ingredient, ->  (ingredient)  { has_ingredient_hiragana(ingredient.try(:hiragana)) }
   scope :has_ingredients, -> (ingredients) {
     has_ingredient(ingredients.uncommon[0]).select(&[:has_all_ingredients?, ingredients[1..-1]])
   }
