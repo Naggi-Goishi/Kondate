@@ -19,7 +19,7 @@ class String
     elsif include_alphabet?
       gsub(/[A-Za-z]/, '').to_hiragana
     elsif include_symbols?
-      gsub(/[\[\]ｘｔｒａ▪<>（）＜＞・\/,、ｂｍＯＬⅬＣＩＭＥＶＸＰＡＢＳ」'･◾︎◆│「０１２３４５６７８９％①②③④⑤⑥⑦⑧⑨⑩。&＆【】◾️★／]/i, '').to_hiragana
+      gsub(/[\[\]ｘｔｒａ▪<>～（）＜＞・\/,、ｂｍＯＬⅬＣＩＭＥＶＸＰＡＢＳ」'･◾︎◆│「０１２３４５６７８９％①②③④⑤⑥⑦⑧⑨⑩。&＆【】◾️★／]/i, '').to_hiragana
     elsif match('ゔ')
       nil
     else
@@ -36,7 +36,7 @@ class String
   end
 
   def include_symbols?
-    match(/[\[\]ｘｔｒａ<>▪＜＞（）・\/,、ｂｍＯＬⅬＣＥＭＩＶＸＰＡＢＳ」'･◾︎◆│「０１２３４５６７８９％①②③④⑤⑥⑦⑧⑨⑩。&＆【】◾️★／]/i)
+    match(/[\[\]ｘｔｒａ<>～▪＜＞（）・\/,、ｂｍＯＬⅬＣＥＭＩＶＸＰＡＢＳ」'･◾︎◆│「０１２３４５６７８９％①②③④⑤⑥⑦⑧⑨⑩。&＆【】◾️★／]/i)
   end
 
   def certain?
