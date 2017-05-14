@@ -62,12 +62,12 @@ class Source
 private
   def evaluate
     case
+    when recipe_kind?
+      @recipe_kind = get_recipe_kind
     when recipe?
       @recipes = get_recipes
     when ingredients?
       @ingredients = get_ingredients
-    when recipe_kind?
-      @recipe_kind = get_recipe_kind
     when next_recipes?
       @recipes = @@next_recipes
     end

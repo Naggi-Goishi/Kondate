@@ -34,5 +34,10 @@ describe 'Source' do
       source = Source.new(recipe_kind.name, is_recipe_kind: true)
       expect(source.recipe_kind).to eq recipe_kind
     end
+
+    it 'has recipe_kind with correct wording list, accordingly' do
+      source = Source.new(recipe_kind.name + 'が食べたい', is_recipe_kind: true)
+      expect(source.recipe_kind).to eq recipe_kind
+    end
   end
 end

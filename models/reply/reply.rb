@@ -58,10 +58,10 @@ private
   def get_content
     if @source.ingredients?
       ReplyContent.new(@source).ingredients
-    elsif @source.recipe?
-      ReplyContent.new(@source).recipe
     elsif @source.recipe_kind?
       ReplyContent.new(@source).recipe_kind
+    elsif @source.recipe?
+      ReplyContent.new(@source).recipe
     elsif @source.next_recipes?
       ReplyContent.new(@source).next_recipes
     else
