@@ -19,7 +19,7 @@ class Recipe < ActiveRecord::Base
   has_many :steps, class_name: 'RecipeStep'
 
   def has_ingredient?(ingredient)
-    ingredients.include?(ingredient)
+    ingredients.contain?(ingredient)
   end
 
   def has_all_ingredients?(ingredients)
