@@ -24,7 +24,7 @@ class ReplyContent
 
   def next_recipes
     set_columns(@source.recipes)
-    recipes.blank? ? Message.new(Reply::WORDINGS[:no_recipes]).build : Carousel.new(columns).build
+    reply
   end
 
   def postback
