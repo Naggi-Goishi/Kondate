@@ -6,35 +6,24 @@ class ReplyContent
 
   def ingredients
     Reply.source_is_ingredients = false
-    recipes = []
-
-    unless @source.ingredients.blank?
-      recipes = get_recipes_and_set_next_recipes(Recipe.has_ingredients(@source.ingredients))
-      columns = recipes_to_columns(recipes)
-    end
-    recipes.blank? ? Message.new(Reply::WORDINGS[:no_recipes]).build : Carousel.new(columns).build
+    set_columns(Recipe.has_ingredients(@source.ingredients))
+    reply
   end
 
   def recipe
     Reply.source_is_recipe = false
-    recipes = get_recipes_and_set_next_recipes(@source.recipes)
-    columns = recipes_to_columns(@source.recipes.limit(5))
-
-    columns.blank? ? Message.new(Reply::WORDINGS[:no_recipes]).build : Carousel.new(columns).build
+    set_columns(@source.recipes)
+    reply
   end
 
   def recipe_kind
     Reply.source_is_recipe_kind = false
-    return Message.new(Reply::WORDINGS[:no_recipes]).build unless @source.recipe_kind
-
-    recipes = Recipe.has_recipe_kinds_name(@source.recipe_kind.name).limit(5)
-    columns = recipes_to_columns(recipes)
-
-    Carousel.new(columns).build
+    set_columns(@source.recipe_kind.try(:recipes))
+    reply
   end
 
   def next_recipes
-    recipes = get_recipes_and_set_next_recipes(@source.recipes)
+    recipes = get_columns_and_set_next_recipes(@source.recipes)
     columns = recipes_to_columns(recipes)
     recipes.blank? ? Message.new(Reply::WORDINGS[:no_recipes]).build : Carousel.new(columns).build
   end
@@ -77,9 +66,19 @@ private
     Button.new(Reply::MENU_BUTTON[:title], Reply::MENU_BUTTON[:text], Reply::MENU_BUTTON[:actions])
   end
 
-  def get_recipes_and_set_next_recipes(all_recipes)
+  def get_columns_and_set_next_recipes(all_recipes)
+    return unless all_recipes
+
     recipes = all_recipes.take(5)
     Source.next_recipes = all_recipes - recipes
-    recipes
+    recipes_to_columns(recipes)
+  end
+
+  def reply
+    @columns.blank? ? Message.new(Reply::WORDINGS[:no_recipes]).build : Carousel.new(@columns).build
+  end
+
+  def set_columns(all_recipes)
+    @columns = get_columns_and_set_next_recipes(all_recipes)
   end
 end

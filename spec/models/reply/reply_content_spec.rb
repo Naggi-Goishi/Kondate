@@ -36,7 +36,7 @@ describe ReplyContent do
       it '該当するレシピがない場合' do
         recipe
         source = Source.new('ほげ', is_recipe: true)
-        result = ReplyContent.new(source).ingredients
+        result = ReplyContent.new(source).recipe
 
         expect(result).to eq Message.new(Reply::WORDINGS[:no_recipes]).build
       end

@@ -9,20 +9,8 @@ describe 'Recipe' do
   let (:recipe_kind) { create(:recipe_kind, recipes: [recipe]) }
 
   context 'scope' do
-    it 'return recipes that has ingredient corresponding hiragana' do
-      expect(Recipe.has_ingredient_hiragana(ingredient.hiragana)).to include recipe
-    end
-
-    it 'return recipes that has corresponding ingredient' do
-      expect(Recipe.has_ingredient(ingredient)).to include recipe
-    end
-
     it 'return recipes that has corresponding ingredient' do
       expect(Recipe.has_ingredients(Ingredient.where(name: ingredient.name))).to include recipe
-    end
-
-    it 'return recipes that has corresponding recipe kind' do
-      expect(Recipe.has_recipe_kinds_name(recipe_kind.name)).to include recipe
     end
   end
 
@@ -51,22 +39,6 @@ describe 'Recipe' do
       ingredient = build(:ingredient)
       recipe = create(:recipe, ingredients: [ingredient])
       expect(ingredient.recipes_count).to eq 1
-    end
-  end
-
-  context 'instance methods' do
-    it 'return true if it has the ingredient' do
-      recipe = create(:recipe, ingredients: [ingredient])
-      expect(recipe.has_ingredient?(ingredient)).to be_truthy
-    end
-
-    it 'return false if it has not the ingredient' do
-      expect(recipe.has_ingredient?(ingredient)).to be_falsy
-    end
-
-    it 'return true if it has all the ingredient' do
-      recipe = create(:recipe, ingredients: [ingredient])
-      expect(recipe.has_ingredient?(ingredient)).to be_truthy
     end
   end
 

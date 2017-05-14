@@ -9,12 +9,6 @@ class Ingredient < ActiveRecord::Base
   has_many :recipes, through: :ingredients_recipes
 
   class << self
-    def include?(ingredient)
-      all.any? do |record|
-        record == ingredient || record.contains?(name: ingredient.name) || record.contains?(hiragana: ingredient.hiragana)
-      end
-    end
-
     def show
       return false if all.blank?
       all.inject('') do |text, ingredient|
