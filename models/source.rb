@@ -79,7 +79,7 @@ private
 
   def get_recipe_kind
     @@recipe_kinds.each do |_, recipe_kind|
-      return RecipeKind.find_by(name: recipe_kind) if text_contains(recipe_kind)
+      return RecipeKind.find_by(name: recipe_kind) if @text.match? (recipe_kind)
     end
     false
   end
@@ -117,10 +117,6 @@ private
   end
 
   def text_matches_to_recipes_kind_wordings?
-    @@recipe_kinds.any? { |_, recipe_kind| recipe_kind == @text.match(/(.+)が食べたい/)[1] }
-  end
-
-  def text_contains(string)
-    Regexp.new(string).match? (@text)
+    @@recipe_kinds.any? { |_, recipe_kind| recipe_kind == @text.match(/(.+)が食べたい/)[1] } if @text.match? (/(.+)が食べたい/)
   end
 end

@@ -4,7 +4,7 @@ class String
   def to_hiragana
     if hiragana?
       self
-    elsif match? (/[ァ-ンヴﾌﾞ]/)
+    elsif match? (/[ァ-ンヴﾌﾞﾌﾗｯｸﾍﾟｯﾊﾟﾄﾏﾄｹﾁｬﾁｮｺﾚﾄｻｲﾞﾊﾟﾝ]/)
       tr('ァ-ンヴﾌﾗｯｸﾍﾟｯﾊﾟﾄﾏﾄｹﾁｬﾁｮｺﾚﾄｻｲﾞﾊﾟﾝ', 'ぁ-んゔぶらっくぺっぱとまとけちゃちょこれとさいぱん').to_hiragana
     elsif match? ('醬')
       gsub('醬', '醤').to_hiragana
@@ -19,7 +19,7 @@ class String
     elsif include_alphabet?
       gsub(/[A-Za-z]/, '').to_hiragana
     elsif include_symbols?
-      gsub(/[\[\]ｘｔｒａ▪<>（）＜＞・\/,、ｂｍＯＬⅬＣＩＭＥＸＰＡＢＳ」'･◾︎◆│「０１２３４５６７８９％①②③④⑤⑥⑦⑧⑨⑩。&＆【】◾️★／]/i, '').to_hiragana
+      gsub(/[\[\]ｘｔｒａ▪<>（）＜＞・\/,、ｂｍＯＬⅬＣＩＭＥＶＸＰＡＢＳ」'･◾︎◆│「０１２３４５６７８９％①②③④⑤⑥⑦⑧⑨⑩。&＆【】◾️★／]/i, '').to_hiragana
     elsif match('ゔ')
       nil
     else
@@ -36,7 +36,7 @@ class String
   end
 
   def include_symbols?
-    match(/[\[\]ｘｔｒａ<>▪＜＞（）・\/,、ｂｍＯＬⅬＣＥＭＩＸＰＡＢＳ」'･◾︎◆│「０１２３４５６７８９％①②③④⑤⑥⑦⑧⑨⑩。&＆【】◾️★／]/i)
+    match(/[\[\]ｘｔｒａ<>▪＜＞（）・\/,、ｂｍＯＬⅬＣＥＭＩＶＸＰＡＢＳ」'･◾︎◆│「０１２３４５６７８９％①②③④⑤⑥⑦⑧⑨⑩。&＆【】◾️★／]/i)
   end
 
   def certain?

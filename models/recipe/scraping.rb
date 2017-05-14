@@ -43,10 +43,7 @@ class Recipe < ActiveRecord::Base
               url  = url[0..url.length-2]
               time = recipe_ele.search('.time').inner_text.strip.gsub('分', '').to_i
               recipe = Recipe.where(url: url).first_or_initialize
-              recipe.name = name
-              recipe.url  = url
-              recipe.time = time
-              recipe.recipe_kind_id = id
+              recipe.attributes = { name: name, url: url, time: time, recipe_kind_id: id }
               recipe.save
               print '#'
             end
