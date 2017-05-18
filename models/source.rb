@@ -74,7 +74,7 @@ private
   end
 
   def get_recipes
-    Recipe.contains(name: @text.gsub(/が食べたい*+\z/, ''))
+    Recipe.contains(name: @text.gsub(/が食べたい.+\z/, ''))
   end
 
   def get_recipe_kind

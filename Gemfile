@@ -9,6 +9,7 @@ gem 'mysql2'
 gem 'rake'
 gem 'mechanize'
 gem 'slim'
+gem 'rdiscount'
 
 group :development, :test do 
   gem 'rspec'
