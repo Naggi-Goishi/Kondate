@@ -19,7 +19,7 @@ class Source
     is_recipe_kind: false
   }.freeze
 
-  attr_accessor :ingredients, :recipe_kind, :recipes, :text
+  attr_accessor :ingredients, :recipe_kind, :recipes, :text, :recipe_name
 
   def initialize(text, flags=DEFAULT_FLAGS)
     @text = text
@@ -74,7 +74,8 @@ private
   end
 
   def get_recipes
-    Recipe.contains(name: @text.gsub(/が食べたい.+\z/, ''))
+    @recipe_name = @text.gsub(/が食べたい.*\z/, '')
+    Recipe.contains(name: @recipe_name)
   end
 
   def get_recipe_kind

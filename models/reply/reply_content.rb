@@ -6,7 +6,7 @@ class ReplyContent
 
   def ingredients
     Reply.source_is_ingredients = false
-    reply(Recipe.has_ingredients(@source.ingredients))
+    reply(Recipe.has_ingredients(@source.ingredients), "#{@source.ingredients.show}を使用した料理を送りますね！")
   end
 
   def message
@@ -14,7 +14,7 @@ class ReplyContent
   end
 
   def next_recipes
-    reply(@source.recipes)
+    reply(@source.recipes, "残り、#{@source.recipes.size}のレシピがあります！")
   end
 
   def postback
@@ -33,12 +33,15 @@ class ReplyContent
 
   def recipe
     Reply.source_is_recipe = false
-    reply(@source.recipes)
+    reply(@source.recipes, "#{@source.recipe_name}を含む料理名のレシピを送りますね！")
   end
 
   def recipe_kind
     Reply.source_is_recipe_kind = false
-    reply(@source.recipe_kind.try(:recipes))
+    if wording = @source.recipe_kind.try(:name).presence
+      wording = "#{wording}のレシピを送ります！"
+    end
+    reply(@source.recipe_kind.try(:recipes), wording)
   end
 
 private
@@ -69,9 +72,13 @@ private
     end
   end
 
-  def reply(all_recipes)
+  def reply(all_recipes, *wordings)
     columns = set_next_recipes_and_get_columns(all_recipes)
-    columns.blank? ? Message.new(Reply::WORDINGS[:no_recipes]).build : Carousel.new(columns).build
+    columns.blank? ? Message.new(Reply::WORDINGS[:no_recipes]).build : built_message_with_carousel(wordings, columns)
+  end
+
+  def built_message_with_carousel(wordings, columns)
+    [*wordings.map { |wording| Message.new(wording).build }, Carousel.new(columns).build].compact
   end
 
   def set_next_recipes_and_get_columns(all_recipes)
