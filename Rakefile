@@ -68,7 +68,7 @@ end
 task :import_recipes_count do
   Ingredient.all.each do |ingredient|
     ingredient.recipes_count = Recipe.has_ingredient(ingredient).count
-    ingredient.save
+    ingredient.recipes_count <= Recipe.all.length ? ingredient.save : next
   end
 end
 

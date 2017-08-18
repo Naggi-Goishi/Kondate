@@ -1,5 +1,4 @@
 class ReplyContent
-
   def initialize(source)
     @source = source
   end
@@ -49,8 +48,8 @@ private
     all_recipes.take(5)
   end
 
-  def get_next_recipes(all_recipes)
-    all_recipes - get_recipes(all_recipes)
+  def get_next_recipes(all_recipes, recipes)
+    all_recipes - recipes
   end
 
   def menu_button
@@ -74,6 +73,7 @@ private
 
   def reply(all_recipes, *wordings)
     columns = set_next_recipes_and_get_columns(all_recipes)
+    print(Source.next_recipes)
     columns.blank? ? Message.new(Reply::WORDINGS[:no_recipes]).build : built_message_with_carousel(wordings, columns)
   end
 
@@ -84,7 +84,8 @@ private
   def set_next_recipes_and_get_columns(all_recipes)
     return unless all_recipes
 
-    Source.next_recipes = get_next_recipes(all_recipes)
-    recipes_to_columns(get_recipes(all_recipes))
+    recipes = get_recipes(all_recipes)
+    Source.next_recipes = get_next_recipes(all_recipes, recipes)
+    recipes_to_columns(recipes)
   end
 end
