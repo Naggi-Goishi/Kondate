@@ -27,6 +27,15 @@ namespace :scrape do
     RecipeStep.import
   end
 
+  task :base_100 do
+    RecipeKind.import
+    Recipe.import_base_names
+    Recipe.import_base_recipe_kind_id
+    Recipe.import_thumbnail_image_url
+    Recipe.import_time
+    Ingredient.import
+  end
+
   namespace :recipes do
     task :name do
       Recipe.import_names
