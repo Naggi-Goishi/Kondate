@@ -16,4 +16,5 @@ group :development, :test do
   gem 'factory_girl'
   gem 'database_cleaner'
   gem 'pry'
+  gem 'rack-test'
 end
