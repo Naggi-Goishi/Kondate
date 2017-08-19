@@ -114,7 +114,7 @@ private
   end
 
   def text_matches_to_recipes_name_wordings?
-    @text.match? (/が食べたい/)
+    @text.match? (/(が食べたい|が飲みたい)/)
   end
 
   def text_matches_to_recipes_kind_wordings?
