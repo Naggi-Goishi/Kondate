@@ -1,3 +1,8 @@
+html {
+  font-family: 'Hiragino Maru Gothic ProN';
+  color: #696969;
+}
+
 table {
   width: 100%;
   border: 1px solid #c0c0c0;
@@ -40,4 +45,12 @@ div.save button:hover {
   color: #fff;
   background-color: #6495ED;
   border: 1px solid #6495ED;
+}
+
+.pull-right {
+  float: right;
+}
+
+.pull-left {
+  float: left;
 }

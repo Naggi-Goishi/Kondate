@@ -4,6 +4,15 @@ html
     meta charset='utf-8'
     title 献立ちゃん
     link rel='stylesheet' href='/stylesheets/base.css'
+    link rel='stylesheet' href='/stylesheets/home.css'
+    link rel='stylesheet' href='/stylesheets/bootstrap.min.css'
 
+  header
+    div.logo_container.pull-left
+      img src='/images/logo.png'
+    div.header_menu.pull-right
+      ul.header_menu_list
+        li お手伝い
+        li 中の人
   body 
     == yield
