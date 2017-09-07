@@ -50,7 +50,7 @@ class KondateChan < Sinatra::Base
   end
 
   get '/' do
-    markdown :readme
+    slim :home
   end
 
   get '/ingredients' do
